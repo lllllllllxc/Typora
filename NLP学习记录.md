@@ -2,7 +2,7 @@
 
 **加粗**   * * ——  * * 
 
-*斜体*  * —— *![1662564780834](NLP学习记录.assets/1662564780834.png)
+*斜体*  * —— *
 
 1. a
 2. b
@@ -98,17 +98,17 @@ wx + b —> y
 
 为找到合适的预测函数，高尔顿提出了最小二乘法Least Square Method
 
-![1652276207809](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1652276207809.png)
+![1652276207809](NLP学习记录.assets\1652276207809.png)
 
-![1652276248901](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1652276248901.png)
+![1652276248901](NLP学习记录.assets\1652276248901.png)
 
-![1652276315366](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1652276315366.png)
+![1652276315366](NLP学习记录.assets\1652276315366.png)
 
 由此得出了代价函数cost/loss function：e = a * w^2+b * w+c
 
 该损失最小时，预测函数则最为精准
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1657787646042.png" alt="1657787646042" style="zoom:80%;" />
+<img src="NLP学习记录.assets\1657787646042.png" alt="1657787646042" style="zoom:80%;" />
 
 mean为计算出的平均损失，即为平均平方误差(Mean Square Error) 
 
@@ -134,9 +134,9 @@ MBGD(Mini-Batch Gradient Descent)小批量梯度下降 每次选用一小批样�
 
 BGD在计算损失和计算梯度时每次训练都是使用整个批量数据计算后取平均值
 
-![1658134083074](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1658134083074.png)
+![1658134083074](NLP学习记录.assets\1658134083074.png)
 
-![1658134069957](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1658134069957.png)
+![1658134069957](NLP学习记录.assets\1658134069957.png)
 
 BGD中的gradient可以并行计算(分别计算再求和)，而SGD由于w的更新具有线性传递性故不能并行
 
@@ -150,7 +150,7 @@ MBSGD(Mini-Batch Stochastic Gradient Descent)小批量随机梯度下降 是深�
 
 Logistic回归问题中常见的sigmoid（S型）函数如下
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1658121294646.png" alt="1658121294646" style="zoom:50%;" />
+<img src="NLP学习记录.assets\1658121294646.png" alt="1658121294646" style="zoom:50%;" />
 
 其将输出值映射到[-1,1] ，最为常用的是映射到[0,1]的 
 $$
@@ -164,7 +164,7 @@ y=1时**{loss=-logy_hat}**  y_hat越接近于1则损失越小
 
 y=0时**loss = -log(1-y_hat)**y_hat越接近于0则损失越小
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1658122834821.png" alt="1658122834821"  />
+<img src="NLP学习记录.assets\1658122834821.png" alt="1658122834821"  />
 
 #### 4.反向传播
 
@@ -172,7 +172,7 @@ y=0时**loss = -log(1-y_hat)**y_hat越接近于0则损失越小
 
 正向进行运算、求偏导并存储计算结果，反向将结果逆向带入偏导公式，逐一求出偏导结果。
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1657862234298.png" alt="1657862234298" style="zoom:50%;" />
+<img src="NLP学习记录.assets\1657862234298.png" alt="1657862234298" style="zoom:50%;" />
 
 ##### mini-batch的读取
 
