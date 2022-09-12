@@ -54,7 +54,29 @@ $$
 >
 >
 
+## git 常用语句
 
+###### push流程
+
+1.git add .（.为all）
+
+2.git commit -m"提交描述"
+
+3.git push -u origin master
+
+## python语法
+
+\_\_name\__在当前.py文件中为\_\_main\_\_，在其他.py文件中是具体包名+文件名
+
+故使用if __ name __ == "__ main __"来判断是否在当前文件中执行，否则import进去的文件所执行的操作将会迭代进当前文件中，使用该方法有利于每个文件进行单独测试
+
+类中的self即当前类的实体
+
+实例化对象的属性可以在\_\_init\_\_里面初始化，也能在函数中初始化，也能在实例化后调用该对象进行添加属性
+
+python中继承的表示即将父类写在类名后的()内，如FeatEmbedding(nn.Moudle)
+
+在子类的def __ init __ （self）方法中需调用super().__ init __(self)初始化父类从而调用父类中的方法
 
 ## NLP学习记录
 
@@ -229,6 +251,24 @@ one-hot 向量存在的问题:1.高维 2.稀疏 3.硬编码
 ![1658885222719](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1658885222719.png)
 
 Pytorch中使用RNNCell与RNN的区别为个体与整体的区别
+
+```python
+dataset = torch.randn(seq_len,batch_size,input_size)
+
+hidden = torch.zeros(batch_size,hidden_size)
+
+rnn_cell = torch.nn.RNNCell(input_size,hidden_size)
+
+for index,input in enumerate(dataset):`
+​	print(' index',index)`		
+​	print('inputsize',inputsize)`
+​	hidden = rnn_cell(input,hidden)`
+input.shape=(batchSize,inputSize)
+
+hidden.shape=(batchSize,hiddenSize)
+```
+
+
 
 `dataset = torch.randn(seq_len,batch_size,input_size)`
 
@@ -558,6 +598,10 @@ self-attention的并行提高了计算效率，但增大了计算量（句子中
 
 <img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662460045589.png" alt="1662460045589" style="zoom:50%;" />
 
+
+
+<img src="NLP学习记录.assets/1662695033360.png" alt="1662695033360" style="zoom: 33%;" />
+
 具体公式：
 
 $PE_{(pos,2i)}=sin(pos/10000^{2i/d_{model}})$
@@ -581,6 +625,8 @@ $$
 对于pos+k位置的位置向量的某一维度2i或2i+1而言，可以表示为pos位置与k位置的位置向量的2i与2i+1维的线性组合
 
 ###### Transformer
+
+seq2seq model with self-attention
 
 <img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662477153655.png" alt="1662477153655" style="zoom: 33%;" />
 
@@ -612,7 +658,9 @@ Transformer工作流程，其中decoder(masked)通过已生成的单词得到Q�
 
 用Q与源语句K、V做自注意力机制，则可以知道源语句中哪些成分对接下来要生成的词更重要
 
+###### GPT
 
+gpt无法做下游任务改造，因为其训练的是整个模型，即已经带有具体任务。对比于ELMo只用来生成更为精确的词向量，其输出结果可以与不同的下游任务对接
 
 ## 论文精读
 
