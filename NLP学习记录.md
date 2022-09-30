@@ -78,6 +78,16 @@ python中继承的表示即将父类写在类名后的()内，如FeatEmbedding(n
 
 在子类的def __ init __ （self）方法中需调用super().__ init __(self)初始化父类从而调用父类中的方法
 
+###### pycharm快捷键
+
+alt+1隐藏/显示左侧栏
+
+ctrl+tab切换文件
+
+shift+enter不改变当前行并换行
+
+
+
 ## NLP学习记录
 
 1.使用conda安装pytorch时，换源后要将
@@ -195,6 +205,8 @@ y=0时**loss = -log(1-y_hat)**y_hat越接近于0则损失越小
 正向进行运算、求偏导并存储计算结果，反向将结果逆向带入偏导公式，逐一求出偏导结果。
 
 <img src="NLP学习记录.assets\1657862234298.png" alt="1657862234298" style="zoom:50%;" />
+
+![1664432694298](NLP学习记录.assets/1664432694298.png)
 
 ##### mini-batch的读取
 
@@ -336,10 +348,62 @@ repeat
 		w <- w + yixi and b <- b + yi
 	end if
 until all classified correctly
-
+#相当于loss函数为
+l(y,x,w) = max(0,-y<w,x>)
 ```
 
-#### 从预训练到bert发展历程
+**多层感知机**（MLP，Multilayer perception)/(FNN，Fully-connected Neural Network)/前馈神经网络
+
+使用隐藏层和激活函数来得到非线性模型
+
+$h = σ(W_1x+b_1) $
+
+$o=w_{2}^{T}h+b_2$
+
+若σ为线性函数，则整体作用等价于一个单层感知机
+
+即将h带入后$o=aw_{2}^{T}W_1x+b^{'}$
+
+常用的激活函数：sigmoid、tanh、ReLU
+
+##### 训练误差、泛化误差
+
+训练误差：模型在训练数据上的误差
+
+泛化误差：模型在新数据上的误差
+
+计算误差的数据集：验证数据集(不能跟训练数据有交叉)、测试数据集(真正的测试数据集是只用一次的)
+
+当超参数是在验证数据集上调出时，并不代表对于新的数据的泛化能力
+
+###### K-则交叉验证
+
+当没有足够多的数据时，将训练数据分为k块
+
+| k     | 1        | 2        | 3        |
+| ----- | -------- | -------- | -------- |
+| step1 | validate | train    | train    |
+| step2 | train    | validate | train    |
+| step3 | train    | train    | validate |
+
+常用k=5或10
+
+一般将整个数据集划分为**训练+验证**（可以使用K-则交叉验证对这一部分进一步划分）、**测试**
+
+##### 过拟合、欠拟合
+
+| -          | 数据简单 | 数据复杂 |
+| ---------- | -------- | -------- |
+| 模型容量低 | 正常     | 欠拟合   |
+| 容量高     | 过拟合   | 正常     |
+
+<img src="NLP学习记录.assets/1664518431221.png" alt="1664518431221" style="zoom:50%;" />
+
+泛化误差会随着模型变大后过于关注训练数据的细节而变大
+
+给定一个模型种类，影响其的两个因素：参数个数、参数值的选择范围
+
+#### 从预训练到bert发展历程 
 
 ##### 预训练
 
@@ -560,6 +624,8 @@ QK相乘求相似度后进行缩放，防止softmax后差距过大(指数函数�
 
 <img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662389708803.png" alt="1662389708803" style="zoom: 50%;" />
 
+$z_1=0.88*v_1 + 0.12*v_2$
+
 self-attention相较于RNN、LSTM解决了长序列依赖问题，并且得到的新的**词向量**中包含了句法特征和语义特征（预训练语言模型优化的目的就是为了使词向量中内容更为准确，更有用）
 
 句法特征
@@ -583,6 +649,12 @@ self-attention相较于RNN、LSTM解决了长序列依赖问题，并且得到�
 
 
 <img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662394194278.png" alt="1662394194278" style="zoom:50%;" />
+
+上三角mask与pad mask求并集
+
+<img src="NLP学习记录.assets/1663249568128.png" alt="1663249568128" style="zoom:50%;" />
+
+
 
 ###### muti-head self-attention
 
@@ -660,7 +732,31 @@ Transformer工作流程，其中decoder(masked)通过已生成的单词得到Q�
 
 ###### GPT
 
+![1663061246125](NLP学习记录.assets/1663061246125.png)
+
 gpt无法做下游任务改造，因为其训练的是整个模型，即已经带有具体任务。对比于ELMo只用来生成更为精确的词向量，其输出结果可以与不同的下游任务对接
+
+###### bert
+
+参考了ELMO模型的双向编码思想，借鉴了GPT用Transformer作为特征提取器的思路，采用了word2vec所使用的CBOW方法
+
+双向编码导致了需要看下文信息故无法进行生成式任务，而GPT则是单向生成式
+
+对比ELMO使用的LSTM是按序传递，BERT使用的Attention能同时看到上下文信息
+
+###### RNN
+
+$h_0=f(Wx_0+b)$   $y_0=g(Wh_0+b)$
+
+$h_1=f(Wx_1+Wh_0+b)$   $y_1=g(Wh_1+b)$
+
+###### lstm
+
+输入门作用于当前时刻的输入值，遗忘门作用于上一时刻的记忆值，二者加权求和得到汇总信息
+
+最后通过输出门决定输出值
+
+三个门的计算公式都为$sigmoid(Wx+Wh+b)$
 
 ## 论文精读
 
