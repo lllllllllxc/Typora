@@ -1,4 +1,4 @@
-## Markdown
+Markdown
 
 **加粗**   * * ——  * * 
 
@@ -32,7 +32,6 @@ x & = \sum_{i=1}^k=\frac{x_1}{h_2}\\
 &=y+1
 \end{aligned}
 $$
-
 
 `单个反引号（左上角）是 代码片段`
 
@@ -76,7 +75,36 @@ $$
 
 python中继承的表示即将父类写在类名后的()内，如FeatEmbedding(nn.Moudle)
 
-在子类的def __ init __ （self）方法中需调用super().__ init __(self)初始化父类从而调用父类中的方法
+在子类的def __ init __ （self）方法中需调用super().__ init __(self)初始化父类从而调用父类中的方法  
+
+`enumerate(data,[start=0])`
+
+指定一个strat，返回一个从该索引开始的枚举对象
+
+`data = [1,2,3]
+for num,value in enumerate(data):
+    print(num,value)`
+
+ ```python
+    #行内函数的定义
+    net,loss = lambda X: d2l.linreg(X,w,b),d2l.squared_loss
+    #调用
+    l = loss(net(X),y)
+ ```
+
+f'{}' 等同于format
+
+```python
+
+
+    print('a的值为{value}'.format(value=xx.value))
+
+    print(f'a的值为{xx.value}')
+
+    torch.device(f'cuda:{i}')for i in range(torch.cuda.device_count())]
+```
+
+
 
 ###### pycharm快捷键
 
@@ -130,17 +158,17 @@ wx + b —> y
 
 为找到合适的预测函数，高尔顿提出了最小二乘法Least Square Method
 
-![1652276207809](NLP学习记录.assets\1652276207809.png)
+<img src="NLP学习记录.assets\1652276207809.png" alt="1652276207809" style="zoom:50%;" />
 
-![1652276248901](NLP学习记录.assets\1652276248901.png)
+<img src="NLP学习记录.assets\1652276248901.png" alt="1652276248901" style="zoom:50%;" />
 
-![1652276315366](NLP学习记录.assets\1652276315366.png)
+<img src="NLP学习记录.assets\1652276315366.png" alt="1652276315366" style="zoom:50%;" />
 
-由此得出了代价函数cost/loss function：e = a * w^2+b * w+c
+由此得出了代价函数cost/loss function：$e = a * w^2+b * w+c$
 
 该损失最小时，预测函数则最为精准
 
-<img src="NLP学习记录.assets\1657787646042.png" alt="1657787646042" style="zoom:80%;" />
+<img src="NLP学习记录.assets\1657787646042.png" alt="1657787646042" style="zoom: 50%;" />
 
 mean为计算出的平均损失，即为平均平方误差(Mean Square Error) 
 
@@ -166,9 +194,9 @@ MBGD(Mini-Batch Gradient Descent)小批量梯度下降 每次选用一小批样�
 
 BGD在计算损失和计算梯度时每次训练都是使用整个批量数据计算后取平均值
 
-![1658134083074](NLP学习记录.assets\1658134083074.png)
+<img src="NLP学习记录.assets\1658134083074.png" alt="1658134083074" style="zoom:50%;" />
 
-![1658134069957](NLP学习记录.assets\1658134069957.png)
+<img src="NLP学习记录.assets\1658134069957.png" alt="1658134069957" style="zoom:50%;" />
 
 BGD中的gradient可以并行计算(分别计算再求和)，而SGD由于w的更新具有线性传递性故不能并行
 
@@ -179,6 +207,10 @@ BGD中的gradient可以并行计算(分别计算再求和)，而SGD由于w的更
 MBSGD(Mini-Batch Stochastic Gradient Descent)小批量随机梯度下降 是深度学习默认的求解算法
 
 优化算法中的学习率、批量大小不是由模型训练来的，而是人为定义的，因此称其为**超参数**
+
+
+
+
 
 Logistic回归问题中常见的sigmoid（S型）函数如下
 
@@ -196,7 +228,7 @@ y=1时**{loss=-logy_hat}**  y_hat越接近于1则损失越小
 
 y=0时**loss = -log(1-y_hat)**y_hat越接近于0则损失越小
 
-<img src="NLP学习记录.assets\1658122834821.png" alt="1658122834821"  />
+<img src="NLP学习记录.assets\1658122834821.png" alt="1658122834821" style="zoom: 67%;" />
 
 #### 4.反向传播
 
@@ -206,7 +238,7 @@ y=0时**loss = -log(1-y_hat)**y_hat越接近于0则损失越小
 
 <img src="NLP学习记录.assets\1657862234298.png" alt="1657862234298" style="zoom:50%;" />
 
-![1664432694298](NLP学习记录.assets/1664432694298.png)
+<img src="NLP学习记录.assets/1664432694298.png" alt="1664432694298" style="zoom:50%;" />
 
 ##### mini-batch的读取
 
@@ -228,13 +260,13 @@ y=0时**loss = -log(1-y_hat)**y_hat越接近于0则损失越小
 
 卷积用极简的数学形式描述了一个动态过程
 
-![1658369453868](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1658369453868.png)
+<img src="NLP学习记录.assets/1665125789428.png" alt="1665125789428" style="zoom:50%;" />
 
-![1658372666991](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1658372666991.png)
+<img src="NLP学习记录.assets/1665125778882.png" alt="1665125778882" style="zoom:50%;" />
 
 一个卷积核计算出一个通道的输出结果，m个卷积核则输出的通道为m个。卷积核的通道数跟输入数据的通道数相同(输入的每一个通道都要对应一个卷积核)。故上图中对应输入(n,width_in,height_in),输出(m,width_out,height_out)的卷积核为(m,n,kernel_size_width,kernel_size_height) ,个卷积块，每个卷积块中有对应输出通道数的单通道卷积。
 
-![1658455716014](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1658455716014.png)
+<img src="NLP学习记录.assets/1665125766315.png" alt="1665125766315" style="zoom:50%;" />
 
 1X1卷积可以减少运算量，实际效果如何？
 
@@ -244,7 +276,7 @@ y=0时**loss = -log(1-y_hat)**y_hat越接近于0则损失越小
 
 RNNCell的本质是一个线性层
 
-![1658734254515](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1658734254515.png)
+<img src="NLP学习记录.assets/1665125644055.png" alt="1665125644055" style="zoom:50%;" />
 
 图左实际作用为图右，即同一个线性层反复使用（权重w不变）
 
@@ -252,7 +284,7 @@ RNN中为什么用tanh比较多？
 
 RNN公式：(i为inputsize，h为hiddensize，h为某一时刻的hidden)
 
-![1658734802427](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1658734802427.png)
+<img src="NLP学习记录.assets/1665125654119.png" alt="1665125654119" style="zoom:50%;" />
 
 one-hot 向量存在的问题:1.高维 2.稀疏 3.硬编码
 
@@ -260,7 +292,7 @@ one-hot 向量存在的问题:1.高维 2.稀疏 3.硬编码
 
 解决问题为使用embedding，即进行如下映射（降维）
 
-![1658885222719](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1658885222719.png)
+<img src="NLP学习记录.assets/1665125670428.png" alt="1665125670428" style="zoom:50%;" />
 
 Pytorch中使用RNNCell与RNN的区别为个体与整体的区别
 
@@ -392,6 +424,8 @@ $o=w_{2}^{T}h+b_2$
 
 ##### 过拟合、欠拟合
 
+过拟合即模型对于训练数据过于精细化地捕捉即捕捉了过多的不具有普适性的噪音，相当于考试背答案，数据少模型大时容易出现该问题
+
 | -          | 数据简单 | 数据复杂 |
 | ---------- | -------- | -------- |
 | 模型容量低 | 正常     | 欠拟合   |
@@ -402,6 +436,60 @@ $o=w_{2}^{T}h+b_2$
 泛化误差会随着模型变大后过于关注训练数据的细节而变大
 
 给定一个模型种类，影响其的两个因素：参数个数、参数值的选择范围
+
+###### 权重衰退
+
+最常见的处理过拟合的方法，是通过约束参数的取值范围来实现的。
+
+比如使用均方范数作为柔性限制$min \space l(w,b)+\frac{λ}{2}||w||^2$ 该柔性限制影响效果如下，将原本的最优解往原点方向拉扯了。新增加的项称为惩罚项
+
+<img src="NLP学习记录.assets/1664634364577.png" alt="1664634364577" style="zoom:33%;" />
+
+加入惩罚项后梯度更新法则如下：
+
+<img src="NLP学习记录.assets/1664634774212.png" alt="1664634774212" style="zoom:50%;" />
+
+通常$λ*η<1$，即每次将$w_t$缩小后再进行梯度更新，也因而被称为权重衰退
+
+###### 丢弃法
+
+对x加入噪音得到x', $E[x']=p*0+(1-p)\frac{x}{1-p}=x$
+
+dropout是正则项，只在训练中使用(类似于MLM)，每次只随机采样一部分子cell进行传递
+
+<img src="NLP学习记录.assets/1664681184533.png" alt="1664681184533" style="zoom:50%;" />
+
+###### 数值稳定性
+
+常见的两个问题：梯度爆炸、梯度消失
+
+梯度爆炸会导致值超出值域、对学习率敏感
+
+梯度消失会使得梯度值变为0，从而训练不会有进展，对回传到的底部层影响尤为严重
+
+解决方法：
+
+1.将乘法变加法，比如ResNet、LSTM
+
+2.归一化，梯度归一化、梯度裁剪
+
+3.合理的权重初始化和激活函数：
+
+将每层的输出和梯度看作是随机变量，并让它们的均值和方差都保持一致
+
+###### 序列模型
+
+马尔可夫假设：当前数据只跟τ个过去数据点相关
+
+$p(x_t|x_1,……,x_{t-1})=p(x_t|x_{t-τ},……x_{t-1})=p(x_t|f(x_{t-τ}，……，x_{t-1})$
+
+可以使用MLP对已知的τ个数据进行自回归
+
+潜变量模型：引入潜变量h_t来表示过去信息$h_t = f(x_1,……,x_{t-1})$,即$x_t=p(x_t|h_t)$
+
+<img src="NLP学习记录.assets/1665108668531.png" alt="1665108668531" style="zoom: 50%;" />
+
+可以分为两部分：1）通过前一时刻的$h_{t-1}$和x算当前时刻的h 2)根据算出的当前时刻h, 以及前一时刻的x算出当前时刻x
 
 #### 从预训练到bert发展历程 
 
@@ -435,7 +523,7 @@ fairseq、transformers库
 
 再根据公式求出整句话出现的概率
 
-![1661827550834](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1661827550834.png)
+<img src="NLP学习记录.assets/1665125692295.png" alt="1665125692295" style="zoom:50%;" />
 
 第二个问题则为P(w_next|"判断"，"这个"，"词"，"的")
 
@@ -470,7 +558,7 @@ P(策略|平滑)=$\frac{cout(平滑，策略)}{count(平滑))}$$\frac{0}{0}$
 
 不存在的改用 *|V|*为词库大小，从而避免分子分母都为0，该方法称为平滑策略
 
-![1662045833611](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662045833611.png)
+<img src="NLP学习记录.assets/1665125704272.png" alt="1665125704272" style="zoom:50%;" />
 
 ##### 神经网络语言模型
 
@@ -482,7 +570,7 @@ P(策略|平滑)=$\frac{cout(平滑，策略)}{count(平滑))}$$\frac{0}{0}$
 
 
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662080209882.png" alt="1662080209882" style="zoom: 33%;" />
+<img src="NLP学习记录.assets/1665125714439.png" alt="1665125714439" style="zoom:50%;" />
 
 假设词典V中有8个单词，则one-hot给出一个8*8的矩阵，其中
 
@@ -527,7 +615,7 @@ C=[c1,c2,c3,c4]
 
 也是神经网络语言模型->专门用来生成词向量
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662084462604.png" alt="1662084462604" style="zoom: 50%;" />
+<img src="NLP学习记录.assets/1665125856851.png" alt="1665125856851" style="zoom: 67%;" />
 
 word2Vec是一类模型分为
 
@@ -560,7 +648,7 @@ Word2Vec模型是否属于预训练模型?  `属于`
 
 
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662099710567.png" alt="1662099710567" style="zoom: 80%;" />
+![1665125875682](NLP学习记录.assets/1665125875682.png)
 
 如上图从words到embedding可以使用Word2Vec模型预训练好的Q矩阵直接将one-hot转换为词向量，故其属于预训练模型，从而也有两种使用方式1.Frozen冻结2.Fine-Tuning微调
 
@@ -568,7 +656,7 @@ Word2Vec模型是否属于预训练模型?  `属于`
 
 不只是训练一个Q矩阵，并且将上下文信息融入到Q矩阵中
 
-![1662103143014](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662103143014.png)
+![1665125890669](NLP学习记录.assets/1665125890669.png)
 
 左边的LSTM获取En的上文信息，右边获取En的下文信息
 
@@ -580,13 +668,13 @@ Word2Vec模型是否属于预训练模型?  `属于`
 
 对于一个模型(CNN、LSTM)很难决定什么数据重要或不重要
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662359114199.png" alt="1662359114199" style="zoom:33%;" />
+<img src="NLP学习记录.assets/1665125901411.png" alt="1665125901411" style="zoom:50%;" />
 
 而人会根据图片中成分的重要性去聚焦
 
 注意力机制中则是通过计算查询对象Q和被查询对象V之间的相似度来衡量重要性的
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662359270002.png" alt="1662359270002" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665125917860.png" alt="1665125917860" style="zoom:67%;" />
 
 $(K_1,K_2,\cdots,K_n)*(Q_1,Q_2,\cdots,Q_n)=(s_1,s_2,\cdots,s_n)$
 
@@ -596,7 +684,7 @@ $(a_1,a_2,\cdots,a_n)*+(V_1,V_2,\cdots,V_n)=(a_1*V_1+a_2*V_2+\cdots+a_n*V_n)=V'$
 
 一般K=V，在Transformer中，K可以！=V但K和V之间一定有某种联系，这样QK计算来的相似度对于V的重要性才有意义
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662361074086.png" alt="1662361074086" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665125933456.png" alt="1665125933456" style="zoom:50%;" />
 
 QK相乘求相似度后进行缩放，防止softmax后差距过大(指数函数增量大)，softmax后得到概率，V相乘后得到的$V^`$中隐含了V中信息对于Q而言的重要程度
 
@@ -608,21 +696,21 @@ QK相乘求相似度后进行缩放，防止softmax后差距过大(指数函数�
 
 1.通过学习来的$W^Q、W^K、W^V$以及词向量乘得q、k、v
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662389016100.png" alt="1662389016100" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665125943426.png" alt="1665125943426" style="zoom:50%;" />
 
 2.分别计算q1 * k1、q2 * k2得到句子中所有成分对“Thinking”的注意分数
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662389218011.png" alt="1662389218011" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665125956411.png" alt="1665125956411" style="zoom:50%;" />
 
 3.对score进行缩小，即除以$\sqrt{d_k}$，假设key的维度为64，则除以8（*为什们是除以k的维度？*）
 
 4.对scale之后的分数进行softmax
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662389561785.png" alt="1662389561785" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665125969046.png" alt="1665125969046" style="zoom:50%;" />
 
 5.将每个value向量乘softmax后的得分并求和得到新的$z_1$
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662389708803.png" alt="1662389708803" style="zoom: 50%;" />
+<img src="NLP学习记录.assets/1665125969046.png" alt="1665125969046" style="zoom:67%;" />
 
 $z_1=0.88*v_1 + 0.12*v_2$
 
@@ -630,11 +718,11 @@ self-attention相较于RNN、LSTM解决了长序列依赖问题，并且得到�
 
 句法特征
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662390800655.png" alt="1662390800655" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665125986872.png" alt="1665125986872" style="zoom: 67%;" />
 
 语义特征
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662390835598.png" alt="1662390835598" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665125997416.png" alt="1665125997416" style="zoom: 67%;" />
 
 带掩码的Masked Self-attention
 
@@ -642,13 +730,13 @@ self-attention相较于RNN、LSTM解决了长序列依赖问题，并且得到�
 
 未做掩码前，一次性全部并行计算
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662394120585.png" alt="1662394120585" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665126009053.png" alt="1665126009053" style="zoom:50%;" />
 
 加掩码后逐步计算(先计算已生成的单词)
 
 
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662394194278.png" alt="1662394194278" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665126017001.png" alt="1665126017001" style="zoom:50%;" />
 
 上三角mask与pad mask求并集
 
@@ -662,13 +750,13 @@ self-attention相较于RNN、LSTM解决了长序列依赖问题，并且得到�
 
 工作流程
 
-![1662434730392](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662434730392.png)
+<img src="NLP学习记录.assets/1665126033726.png" alt="1665126033726" style="zoom:50%;" />
 
 ###### position encoding
 
 self-attention的并行提高了计算效率，但增大了计算量（句子中的词与每个词的关系），并且失去了位置信息，故需要将位置信息添入新的词向量中
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662460045589.png" alt="1662460045589" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665126046995.png" alt="1665126046995" style="zoom:50%;" />
 
 
 
@@ -700,7 +788,7 @@ $$
 
 seq2seq model with self-attention
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662477153655.png" alt="1662477153655" style="zoom: 33%;" />
+![1665126062825](NLP学习记录.assets/1665126062825.png)
 
 是一个seq2seq模型，序列到序列
 
@@ -708,19 +796,19 @@ seq2seq model with self-attention
 
 解码器：获取词向量后生成翻译结果
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662477331418.png" alt="1662477331418" style="zoom:33%;" />
+<img src="NLP学习记录.assets/1665126075823.png" alt="1665126075823" style="zoom:50%;" />
 
 模型中Nx即层数，默认使用了6个编码器(每一块都是一个self-attention)，逐步增强词向量的精准度
 
 编码器具体结构步骤
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662478310043.png" alt="1662478310043" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665126087879.png" alt="1665126087879" style="zoom:50%;" />
 
 ”Thinking“—>词向量x1(通过one-hot、word2vec等得到)+positional encoding—>x1'—>输入到self-attention与其他词向量此处为x2计算注意力—>z1 (该词向量具有位置、句法、语义信息)—>残差连接(避免梯度消失)+归一化—>z1''—>feedforward，Relu(w2(w1x+b1)+b2),此前都只在做线性变换(空间中的平移和放缩)，relu则是非线性变换，如此才可以拟合空间中的任一状态—>r1
 
 
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1662480752674.png" alt="1662480752674" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665126095789.png" alt="1665126095789" style="zoom: 67%;" />
 
 decoder的self-attention对已经生成的词进行编码，所以应该加mask
 
@@ -743,6 +831,20 @@ gpt无法做下游任务改造，因为其训练的是整个模型，即已经�
 双向编码导致了需要看下文信息故无法进行生成式任务，而GPT则是单向生成式
 
 对比ELMO使用的LSTM是按序传递，BERT使用的Attention能同时看到上下文信息
+
+bert训练和GPT一样，分两步：
+
+第一阶段：使用容易获取的大规模无标签数据，来训练基础语言模型
+
+第二阶段：根据指定任务的少量带标签数据进行微调训练
+
+由于使用的是Transformer的Encoder所以能看到整个上下文所以无法使用完形填空CBOW的思想
+
+其解决方法是，在输入时将句子mask15%的token，然后让模型预测被masked的token，该方法称为MLM。该方法只在训练阶段使用，测试阶段不使用。
+
+使用Mask后导致模型更多地关注在了被mask掉的token上
+
+由于训练与测试阶段输入数据的不同故将被mask掉的15%又分为80%的[Mask]、10%的不改变、10%的错误替换，这样使得模型对于除mask掉之外的词也会被模型加以注意(否则将会认为除了[Mask]之外的所有数据都是正确的)
 
 ###### RNN
 
@@ -810,29 +912,45 @@ $h_1=f(Wx_1+Wh_0+b)$   $y_1=g(Wh_1+b)$
 
  	Transformer也使用了encoder-decoder架构，具体来说该encoder-decoder使用了堆叠起来的self-attention 、point-wise和全连接层
 
-​	编码器结构如下<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1657007644499.png" alt="1657007644499" style="zoom:50%;" />
+​	编码器结构如下<img src="NLP学习记录.assets/1665126121911.png" alt="1665126121911" style="zoom: 67%;" />
 
-输入先进入嵌入层，将词转换为向量，随后连接的是N层的由Muti-Head Attention以及Feed Forward(前馈神经网络)构成的块，【Add&Norm】中连接到Add的为**残差连接**(将浅层输出与深层输出求和 we hypothesize that it is easier to optimize the residual mapping than to optimize the original, unreferenced mapping . To the extreme,  if an identity mapping were optimal, it would be easier to push the residual to zero than to fit an identity mapping by a stack of nonlinear layers 残差块使得训练很深的网络更加容易)，Norm为LayerNormalization
+输入先进入嵌入层，将词转换为向量，随后连接的是N层的由Muti-Head Attention以及Feed Forward(前馈神经网络)构成的块，【Add&Norm】中连接到Add的为
 
-![1658456625771](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1658456625771.png)
+**残差连接**
+
+(将浅层输出与深层输出求和 we hypothesize that it is easier to optimize the residual mapping than to optimize the original, unreferenced mapping . To the extreme,  if an identity mapping were optimal, it would be easier to push the residual to zero than to fit an identity mapping by a stack of nonlinear layers 残差块使得训练很深的网络更加容易)，Norm为LayerNormalization
+
+<img src="NLP学习记录.assets/1665126138890.png" alt="1665126138890" style="zoom:50%;" />
 
 残差连接可以解决**梯度消失**的问题(防止梯度<1相乘后无限接近于0)，残差连接后使得梯度保持在1左右
 
+在使用残差连接之前，更深的神经网络并不能比浅层神经网络具有更好的效果(更深的网络，误差率(训练+测试)反而更高)。
+
+实际上浅层网络构建好后，后加的网络充当一个identity mapping 的话，深层网络的精确度不应该降低，但实际来说SGD并无法实现这一点。
+
+残差连接则是将从前一层传递过来的$H(X)$不直接去学习，而是学习$H(X)-x$, 并在输出时加上那个减去的$x$.
+
+即
+
 《Identity Mappings in Deep Residual Networks》中介绍了各种residual块的设计。
 
-​	LayerNorm与batchNorm比较，当输入为2D<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1657260375499.png" alt="1657260375499" style="zoom:67%;" />
+​	LayerNorm与batchNorm比较(蓝色为batchNorm)，layerNorm是对一个样本所有特征进行计算，BatchNorm是对一个mini-batch中的一个特征进行计算
+
+当输入为2D<img src="NLP学习记录.assets/1665126147831.png" alt="1665126147831" style="zoom:50%;" />
 
 二者通过对数据的转置可以达到统一的效果
 
 而RNN、Transformer中输入为3D，如图
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1657260744210.png" alt="1657260744210" style="zoom: 50%;" />
+<img src="NLP学习记录.assets/1665126156370.png" alt="1665126156370" style="zoom:50%;" />
 
-由于LayerNorm、BatchNorm两种切法不同以及每个序列长度的不固定性，导致了BatchNorm在每次小批量计算时的均值方差的抖动相对较大 ，同时也导致其全局的均值方差不准确（可能新的序列长度过长或过短）；而LayerNorm小批量计算的是每个样本自己的均值和方差，并且也没有必要存储全局均值方差，故相对稳定。
+由于LayerNorm、BatchNorm两种切法不同以及每个序列长度的不固定性，导致了BatchNorm在每次小批量计算时的均值方差的抖动相对较大 ，同时也导致其全局的均值方差不准确（可能新的序列长度过长或过短）；而LayerNorm小批量计算的是每个样本自己的均值和方差，并且也没有必要存储全局均值方差（测试时），故相对稳定。
+
+<img src="NLP学习记录.assets/1665125059900.png" alt="1665125059900" style="zoom:50%;" />
 
 解码器结构如下
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1657261332402.png" alt="1657261332402" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665126164383.png" alt="1665126164383" style="zoom: 67%;" />
 
 解码器的自回归机制(t-1时刻的输出作为t时刻的输入)，以及attention机制中能看到完整的输入，故需要带掩码的注意力机制即Masked Attention，来保证在t时间的输入不会看到t时间之后的内容
 
@@ -840,11 +958,11 @@ $h_1=f(Wx_1+Wh_0+b)$   $y_1=g(Wh_1+b)$
 
 ​	Transformer在计算注意力时使用的是sclaed dot-product attention。该方法中query和key的维度相等，通过计算两个向量的内积来衡量其相似度，内积越大则相似度越高(？)（long相等的前提下）,**Attention(Q,K,V)=softmax(Q K内积/向量长度) V**。除以向量长度是防止两个向量长度比较长时，出现较大值的概率将会增加，该相对差距变大的可能性增加后使得softmax后该值更加靠近于1，剩余的值则更加靠近于0，在该种情况下softmax回归计算时梯度将会很小，不利于尽快收敛。而Transformer中的向量长度都是比较大的故应除以√dk。 计算流程图如下
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1657505440094.png" alt="1657505440094" style="zoom: 67%;" />
+<img src="NLP学习记录.assets/1665126171051.png" alt="1665126171051" style="zoom:67%;" />
 
 ##### Muti-Head Attention
 
-<img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1657506633516.png" alt="1657506633516" style="zoom:50%;" />
+<img src="NLP学习记录.assets/1665126183494.png" alt="1665126183494" style="zoom:67%;" />
 
 相较于单个的注意力函数直接去计算高维的向量，将其投影到低维度并行地去计算更有好处 ，如上图将V、K、Q分别进行投影，投影h次，而每次投影时的W是一直在学习的。
 $$
@@ -927,11 +1045,11 @@ bert使用的架构是多层双向的Transformer编码器，该架构基于Trans
 
 bert使用WordPiece去切词，每个序列的第一个词永远是[CLS(classificiation)]。句子之间用[SEP]特殊标记来分割。并且可以通过学习到的嵌入层来区分token属于A句子还是B句子
 
- <img src="C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1659541817045.png" alt="1659541817045" style="zoom:67%;" />
+ <img src="NLP学习记录.assets/1665126193703.png" alt="1665126193703" style="zoom: 67%;" />
 
 input经过三层embedding后求和，分别是词元本身的向量，所在句子信息向量和整体的position向量，如下图所示。
 
-![1659544205824](C:\Users\Dust\AppData\Roaming\Typora\typora-user-images\1659544205824.png)
+<img src="NLP学习记录.assets/1665126208275.png" alt="1665126208275" style="zoom:50%;" />
 
 以上为预训练和微调的相同部分。
 
