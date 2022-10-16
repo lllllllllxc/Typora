@@ -33,6 +33,14 @@ x & = \sum_{i=1}^k=\frac{x_1}{h_2}\\
 \end{aligned}
 $$
 
+ 行外公式中包含多个行使用开始结束符 \begin{aligned} \end{aligned}，使用\\\进行换行，使用&选择对齐方式,&在谁前面就以谁对齐
+$$
+\begin{aligned} &KPI=(N+S)W \\ &PI=N+S \\ &I=W \end{aligned} 
+$$
+
+
+
+
 `单个反引号（左上角）是 代码片段`
 
 ```
@@ -198,6 +206,8 @@ Top-5 error同理，且Top-5 error的数值会比Top-1 error低
 通常无监督学习是指不需要人为注释的样本中抽取信息。例如word2vec。
 
 半监督学习介于两者之间。算法上，包括一些对常用监督式学习算法的延伸，这些算法首先试图对未标识数据进行建模，在此基础上再对标识的数据进行预测
+
+SOTA：state-of-the-art当前最先进的水平
 
 ## NLP学习记录
 
