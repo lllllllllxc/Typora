@@ -35,7 +35,7 @@ $$
 
  行外公式中包含多个行使用开始结束符 \begin{aligned} \end{aligned}，使用\\\进行换行，使用&选择对齐方式,&在谁前面就以谁对齐
 $$
-\begin{aligned} &KPI=(N+S)W \\ &PI=N+S \\ &I=W \end{aligned} 
+\begin{aligned} &KPI=(N+S)W \\ &PI=N+S \\ &I=W \end{aligned}
 $$
 
 
@@ -173,9 +173,13 @@ out:[1, 2, 3, 2, 3, 4, 3, 4, 5]
 
 当元组内嵌套的元素是可变类型比如list时，其不可改变的特性将失去。
 
+## 编译器相关
+
 ###### pycharm快捷键
 
 alt+1隐藏/显示左侧栏
+
+alt+A close others tap
 
 ctrl+tab切换文件
 
@@ -188,6 +192,37 @@ ctrl+D删除代码内整行
 pytorch(Conda+App)默认路径修改:
 
 https://zhuanlan.zhihu.com/p/48962153
+
+###### pip
+
+临时换源
+
+```
+pip3 install 库名 -i 镜像地址
+```
+
+- 阿里云：https://mirrors.aliyun.com/pypi/simple/
+- 清华：https://pypi.tuna.tsinghua.edu.cn/simple
+- 中国科技大学 https://pypi.mirrors.ustc.edu.cn/simple/
+- 华中理工大学：http://pypi.hustunique.com/
+- 山东理工大学：http://pypi.sdutlinux.org/
+- 豆瓣：http://pypi.douban.com/simple/
+
+pytorch离线下载
+
+https://download.pytorch.org/whl/
+
+###### conda
+
+anaconda磁盘迁移
+
+https://blog.csdn.net/chengjinpei/article/details/119835339
+
+使用conda安装pytorch时，换源后要将
+
+`conda install pytorch torchvision torchaudio cpuonly -c pytorch`
+
+中-c pytorch去掉，否则仍使用默认源
 
 ## 深度学习术语
 
@@ -207,17 +242,52 @@ Top-5 error同理，且Top-5 error的数值会比Top-1 error低
 
 半监督学习介于两者之间。算法上，包括一些对常用监督式学习算法的延伸，这些算法首先试图对未标识数据进行建模，在此基础上再对标识的数据进行预测
 
+###### 模型、数据集评价
+
+https://blog.csdn.net/qq_41554005/article/details/119751518
+
 SOTA：state-of-the-art当前最先进的水平
+
+benchmark：是性能较好的被广泛认同的模型算法
+
+baseline：在对模型进行优化时version1即是baseline，即代表仍需要继续改进的基础模型
+
+DOI( *Digital Object Identifier* ):
+
+https://www.atlantis-press.com/using-dois
+
+##### 对话生成相关
+
+###### BLEU
+
+自动的机器翻译的评价方法，其中评价标准包括：充分性、通顺性、精确性	
 
 ## NLP学习记录
 
-1.使用conda安装pytorch时，换源后要将
+###### 1.矩阵乘法
 
-`conda install pytorch torchvision torchaudio cpuonly -c pytorch`
+二维矩阵乘法torch.mm(不支持broadcast)
 
-中-c pytorch去掉，否则仍使用默认源
+三维带Batch矩阵乘法torch.bmm(不支持broadcast)
 
-2.张量tensor与矩阵matrix区别
+混合矩阵乘法torch.matmul(支持broadcast)
+
+https://pytorch.org/docs/stable/generated/torch.matmul.html#torch.matmul
+
+矩阵逐元素乘法torch.mul(支持broadcast)
+
+```python
+A = torch.randn(2,3,4)
+B = torch.randn(3, 4)
+print (torch.mul(A,b).shape) 
+out: torch.size([2,3,4])
+```
+
+@类似torch.mm、torch.bmm、torch.matmul
+
+*可以执行element-wise逐元素矩阵乘法，即类似torch.mul
+
+###### 2.张量tensor与矩阵matrix区别
 
 tensor定义：A rank-n tensor in m-dimensions is a mathematical object that has n indices and m^n components and obeys certain transformation rules.
 
@@ -453,7 +523,7 @@ def init_hidden(self):
 
 **h_n.shape =(numlayers,batchSize,hiddenSize)**
 
-#### 6.感知机
+##### 6.感知机
 
 o=σ(<w,x>+b)   σ(x)={1 if x>0, -1 otherwise}
 
@@ -592,7 +662,7 @@ $p(x_t|x_1,……,x_{t-1})=p(x_t|x_{t-τ},……x_{t-1})=p(x_t|f(x_{t-τ}，…�
 
 应用于1）预训练模型(e.g. bert,gpt-3) 2)生成文本，给定前面几个词，不断使用Xt~p(Xt|X1,……,Xt)生成后续文本 3）判断多个序列中哪个更常见(e.g. “to recognize speech”和“to wreck a nice beach” )
 
-使用计数来建模 其中n为corpus的数量
+使用计数来建模 其中n为corpus的数量（n-gram）
 
 seq_len=2时$p(x,x')=p(x)p(x'|x)=\frac{n(x)}{n}\frac{n(x,x')}{n(x)}$  n(x,x')为x与x'连续出现的次数
 
@@ -965,13 +1035,15 @@ gpt无法做下游任务改造，因为其训练的是整个模型，即已经�
 
 双向编码导致了需要看下文信息故无法进行生成式任务，而GPT则是单向生成式
 
-对比ELMO使用的LSTM是按序传递，BERT使用的Attention能同时看到上下文信息
+对比ELMO使用的LSTM是按序传递(无法同时看到上下文，只是单独看到并作拼接)，BERT使用的Attention能同时看到上下文信息
 
 bert训练和GPT一样，分两步：
 
 第一阶段：使用容易获取的大规模无标签数据，来训练基础语言模型
 
 第二阶段：根据指定任务的少量带标签数据进行微调训练
+
+不同于GPT使用$P(w_i|,w_1,……,w_{i-1})$,由于bert能看到全局信息，所以使用$P(w_i|,w_1,……,w_{i-1}，w_{i+1},……,w_n)$为目标函数
 
 由于使用的是Transformer的Encoder所以能看到整个上下文所以无法使用完形填空CBOW的思想
 
@@ -981,13 +1053,25 @@ bert训练和GPT一样，分两步：
 
 由于训练与测试阶段输入数据的不同故将被mask掉的15%又分为80%的[Mask]、10%的不改变、10%的错误替换，这样使得模型对于除mask掉之外的词也会被模型加以注意(否则将会认为除了[Mask]之外的所有数据都是正确的)
 
+bert中的NSP（下句预测），由于语言模型不具备获取句子间信息的能力，因此bert采用了NSP作为无监督预训练的一部分。具体做法：bert输入的语句由两个句子构成，其中50%概率将语义连贯的两个连续句子作为训练文本(连续句对一般选自篇章级别的语料，来确保前后语句的语义相关性)，另外50%的概率将完全随机抽取两个句子作为训练文本。
+
+>连续句对：[CLS]今天天气很糟糕[SEP]下午体育课取消了[SEP]
+>
+>随机句对：[CLS]今天天气很糟糕[SEP]鱼快被烤焦了[SEP]
+
+其中[SEP]表示分隔符，[CLS]用于类别预测，结果为1则表示连续，0则表示不连续即随机句对，通过训练[CLS]编码后的输出标签，BERT可以学会捕捉两个输入句对的文本语义。
+
+Bert在通过预训练知道对应的词和句子的表达后，再对其进行一定的引导即下游任务的改造
+
+>发展历程参考自https://www.cnblogs.com/nickchen121/p/16470569.html
+
 ###### RNN
 
 $h_0=f(Wx_0+b)$   $y_0=g(Wh_0+b)$
 
 $h_1=f(Wx_1+Wh_0+b)$   $y_1=g(Wh_1+b)$
 
-![1665292265294](NLP学习记录.assets/1665292265294.png)
+<img src="NLP学习记录.assets/1665292265294.png" alt="1665292265294" style="zoom:67%;" />
 
 当前时刻的输出是预测当前时刻的观察，但是输出发生在观察之前。在计算损失时比较Ot和Xt,但Xt用来更新Ht+1
 
@@ -997,219 +1081,108 @@ $h_t=f(W_{hh}h_{t-1}+W_{hx}x_{t-1}+b_h)$
 
 $o_t=W_{ho}h_t+b_o$
 
+具有L个隐藏层的**深度RNN**，每个隐状态都连续地传递到当前层的下⼀个时间步 和下⼀层的当前时间步
+
+<img src="NLP学习记录.assets/1666420138069.png" alt="1666420138069" style="zoom:67%;" />
+
+由于未来的语境会影响当前预测词，故出现**双向RNN**
+
+<img src="NLP学习记录.assets/1666421269130.png" alt="1666421269130" style="zoom: 50%;" />
+
+其实现相当于序列正向计算隐状态，序列反向计算隐状态再reverse，最后将对位的隐状态concat得到Ht
+
+最后输出$O_t = H_tW_{hq}+b_q$
+
+由于双向RNN能看到上下文信息，因此通常用来对序列抽取特征、填空，而不是预测未来
+
 ###### lstm 
 
-输入门作用于当前时刻的输入值，遗忘门作用于上一时刻的记忆值，二者加权求和得到汇总信息
+**输入门**作用于当前时刻的输入值，**遗忘门**作用于上一时刻的记忆值，二者加权求和得到汇总信息
 
-最后通过输出门决定输出值
+最后通过**输出门**决定输出值
 
 三个门的计算公式都为$sigmoid(Wx+Wh+b)$
 
-## 论文精读
+$I_t=σ(X_tW_{xi}+H_{t-1}W_{hi}+b_i)$
 
-方法论：
+$F_t=σ(X_tW_{xf}+H_{t-1}W_{hf}+b_f)$
 
-三遍：
+$O_t=σ(X_tW_{xo}+H_{t-1}W_{ho}+b_o)$
 
-1. 标题+摘要+结论+实验部分图表 最终决定是否继续读
-2. 重要图表的详细内容+圈出引用文献 
-3. 复现作者的思路，并有自己的想法
+增加了候选记忆单元$C^{'}_t$
 
-①标题+作者
+$C^{'}_t=tanh(X_tW_{xc}+H_{t-1}W_{hc}+b_c)$
 
-②摘要
+对于计算结果$C_t$来说$F_t$和$I_t$相对独立，不像GRU中相互牵制
 
-③结论
+$C_t=F_t*C_{t-1}+I_t*C^{'}_t$
 
-④导言
+$C_t$在计算后由于$C_{t-1}$、$C^{'}_t$都在(-1,1)之间所以相加后范围在(-2，2)之间，故需要将其拉回(-1,1) 。并使用$O_t$对于输出即传递给H_t的信息再加以控制
 
-⑤相关工作
+$H_t = O_t*tanh(C_t)$
 
-⑥模型
+<img src="NLP学习记录.assets/1666363831344.png" alt="1666363831344" style="zoom:67%;" />
 
-⑦实验
+thinking: LSTM添加一个传递的C协助更新隐藏状态H，是否可以添加多层似C的记忆传递单元并协助更新H
 
-⑧评论
+使用C后效果更好是不是由于对前文状态信息放大再缩小后的结果
 
-### 1.Transformer 
+###### GRU
 
-②主流的序列转录模型（由所给序列生成目标序列）大多都基于复杂的循环或卷积神经网络，都有一个编码器和解码器。其中表现最佳的模型也会在编码器和解码器之间使用到注意力机制。基于注意力机制作者提出了一个新的简单的神经网络架构，**Transformer**，该模型仅仅基于注意力机制。
+对于RNN来说前面随着隐藏状态的累积，更早时候输入传递过来的信息将会被弱化。
 
-③Transformer 是第一个仅仅使用注意力机制的转录模型，它将之前的在编码解码器之间使用的循环层替换为了multi-head self-attention
+而对于连续的信息，并不是每个信息都同等重要，其中不乏有关键词更应重视，为达到只关注某些部分的目的，需要加入gate门。
 
-在机器翻译这一任务上，Transformer训练地比其他传统的架构都要快。
+GRU加入了**更新门**、**重置门**(可学习权重是RNN的三倍)
 
-④RNN对于一个序列的计算是从左往右一步一步做，对于第t个词会计算隐藏状态ht，该ht由前一个词的ht-1和当前词一起决定。该时序性的计算使得并行难以进行。
+$R_t=σ(X_tW_{xr}+H_{t-1}W_{hr}+b_r)$
 
-​	并且Attention机制早已应用于编码器与解码器的结合部，用来使编码器的东西很有效地传给解码器。
+$Z_t=σ(X_tW_{xz}+H_{t-1}W_{hz}+b_z)$
 
-​	Transformer不再使用之前的循环神经层，而是仅使用注意力机制去描绘输入和输出之间的全局依赖关系。它支持更强的并行，并且可以在更短时间内完成更为高质量的任务。
+加入候选隐藏状态，用于$H_{t-1}$与重置门进行操作通过学习参数选择忘掉一部分之前的隐藏信息
 
-⑤  Extended Neural 、GPU ByteNet 、ConvS2S都通过使用卷积神经网络为基本单位进行构建，并行计算所有输入输出位置的隐藏表示，从而减少顺序计算增加并发度。对于这些模型，将来自两个任意输入或输出位置的信号关联起来所需的操作数量随着位置之间的距离而增长，对于ConvS2S来说是线性增长，对于ByteNet来说是对数增长。
+$H^{'}_{t}=tanh(X_tW_{xh}+(R_t*H_{t-1})W_{hh}+b_h)$
 
-​	而在Transformer这些运算的数量被减少到了常量级别，以此为代价的是由于注意力权重位置的平均化导致的辨识度的降低，对于这一缺点，采用Multi-Head Attention机制来解决。
+最终使用候选隐藏状态和更新门计算新的隐藏状态
 
-​	Self-attention,或者称为intra-attention，是将一个序列中不同位置关联起来的注意力机制，以计算序列的表示。
+$H_t = Z_t*H_{t-1}+(1-Z_t)*H^{'}_t$
 
-​	Transformer是第一个只使用自注意力机制来做encode、decode架构的模型
+ 特殊的，当$Z_t$全0，$R_t$全1时等价于RNN;当$Z_t$全1时，将不看当前输入$X_t$直接更新$H_t $
 
-⑥ 大多数有竞争力的神经网络序列转录模型都有一个encoder-decoder架构。encoder将输入序列的符号表示x(x1,……xn)转换成一个连续的向量表示z(z1,……zn)。对于z decoder将一次解码出一个y最终生成序列y(y1,……yn)，每次生成都是一次auto-regressive自回归，对于yt则需要y1~yt-1作为输入。
+<img src="NLP学习记录.assets/1666320196437.png" alt="1666320196437" style="zoom:67%;" />
 
- 	Transformer也使用了encoder-decoder架构，具体来说该encoder-decoder使用了堆叠起来的self-attention 、point-wise和全连接层
+thinking:实际实现的是对ht的压缩？
 
-​	编码器结构如下<img src="NLP学习记录.assets/1665126121911.png" alt="1665126121911" style="zoom: 67%;" />
+###### encoder-decoder架构
 
-输入先进入嵌入层，将词转换为向量，随后连接的是N层的由Muti-Head Attention以及Feed Forward(前馈神经网络)构成的块，【Add&Norm】中连接到Add的为
+encoder将输入编程为中间特征表达，decoder将中间特征编码输出
 
-**残差连接**
+<img src="NLP学习记录.assets/1666426886361.png" alt="1666426886361" style="zoom:67%;" />
 
-(将浅层输出与深层输出求和 we hypothesize that it is easier to optimize the residual mapping than to optimize the original, unreferenced mapping . To the extreme,  if an identity mapping were optimal, it would be easier to push the residual to zero than to fit an identity mapping by a stack of nonlinear layers 残差块使得训练很深的网络更加容易)，Norm为LayerNormalization
+###### seq2seq
 
-<img src="NLP学习记录.assets/1665126138890.png" alt="1665126138890" style="zoom:50%;" />
+最早用来做机器翻译
 
-残差连接可以解决**梯度消失**的问题(防止梯度<1相乘后无限接近于0)，残差连接后使得梯度保持在1左右
+![1666428270273](NLP学习记录.assets/1666428270273.png)
 
-在使用残差连接之前，更深的神经网络并不能比浅层神经网络具有更好的效果(更深的网络，误差率(训练+测试)反而更高)。
+其中encoder使用的是RNN输出为最后的隐层，将该隐藏状态输出给解码器的隐状态，decoder是没有输出的RNN
 
-实际上浅层网络构建好后，后加的网络充当一个identity mapping 的话，深层网络的精确度不应该降低，但实际来说SGD并无法实现这一点。
+，在训练阶段如右图，decoder每次输入的是正确的序列从而避免误差累积
 
-残差连接则是将从前一层传递过来的$H(X)$不直接去学习，而是学习$H(X)-x$, 并在输出时加上那个减去的$x$.
+而对于推理任务，只能将上一时刻的输出作为下一时刻的输入
 
-即
+![1666429622913](NLP学习记录.assets/1666429622913.png)
 
-《Identity Mappings in Deep Residual Networks》中介绍了各种residual块的设计。
+###### BLEU
 
-​	LayerNorm与batchNorm比较(蓝色为batchNorm)，layerNorm是对一个样本所有特征进行计算，BatchNorm是对一个mini-batch中的一个特征进行计算
+$p_n$是预测中所有n-gram的精度
 
-当输入为2D<img src="NLP学习记录.assets/1665126147831.png" alt="1665126147831" style="zoom:50%;" />
+对于标签序列A **B C D** E F 和预测序列A B B C D而言，p1 = 4/5 (n=1即连续一个预测成功) p2 = 3/4（n=2 连续预测两个成功 AB <u>BB</u> BC CD 中成功预测3个）p3 = 1/3 (n=3 ABB BBC **BCD**中成功1个)
 
-二者通过对数据的转置可以达到统一的效果
+其值越大预测效果越好，最大=1. 其定义为：
 
-而RNN、Transformer中输入为3D，如图
+<img src="NLP学习记录.assets/1666428447887.png" alt="1666428447887" style="zoom:67%;" />
 
-<img src="NLP学习记录.assets/1665126156370.png" alt="1665126156370" style="zoom:50%;" />
+其中exp(min())部分是为了防止预测的长度短于标签长度,即$len_{pred}<len_{label}$时将会使计算$e^{-x}$，从而拉低分数
 
-由于LayerNorm、BatchNorm两种切法不同以及每个序列长度的不固定性，导致了BatchNorm在每次小批量计算时的均值方差的抖动相对较大 ，同时也导致其全局的均值方差不准确（可能新的序列长度过长或过短）；而LayerNorm小批量计算的是每个样本自己的均值和方差，并且也没有必要存储全局均值方差（测试时），故相对稳定。
-
-<img src="NLP学习记录.assets/1665125059900.png" alt="1665125059900" style="zoom:50%;" />
-
-解码器结构如下
-
-<img src="NLP学习记录.assets/1665126164383.png" alt="1665126164383" style="zoom: 67%;" />
-
-解码器的自回归机制(t-1时刻的输出作为t时刻的输入)，以及attention机制中能看到完整的输入，故需要带掩码的注意力机制即Masked Attention，来保证在t时间的输入不会看到t时间之后的内容
-
-​	**Attention机制**就是将query查询内容根据键值对key-value中与key的相似度映射为一个output，其中key-value保持不变，随着query权重分配的变化，将会有不同的output。在计算相似度时，不同的Attention版本有不同的算法。(涉及到的所有数据都是向量)
-
-​	Transformer在计算注意力时使用的是sclaed dot-product attention。该方法中query和key的维度相等，通过计算两个向量的内积来衡量其相似度，内积越大则相似度越高(？)（long相等的前提下）,**Attention(Q,K,V)=softmax(Q K内积/向量长度) V**。除以向量长度是防止两个向量长度比较长时，出现较大值的概率将会增加，该相对差距变大的可能性增加后使得softmax后该值更加靠近于1，剩余的值则更加靠近于0，在该种情况下softmax回归计算时梯度将会很小，不利于尽快收敛。而Transformer中的向量长度都是比较大的故应除以√dk。 计算流程图如下
-
-<img src="NLP学习记录.assets/1665126171051.png" alt="1665126171051" style="zoom:67%;" />
-
-##### Muti-Head Attention
-
-<img src="NLP学习记录.assets/1665126183494.png" alt="1665126183494" style="zoom:67%;" />
-
-相较于单个的注意力函数直接去计算高维的向量，将其投影到低维度并行地去计算更有好处 ，如上图将V、K、Q分别进行投影，投影h次，而每次投影时的W是一直在学习的。
-$$
-MultiHead(Q,K,V) = Concat(head_1,……,head_h)W^o
-$$
-
-$$
-head_i= Attention(QW_i^Q,KW_i^K,VW_i^V)
-$$
-
-##### Position-wise Feed-Forward Networks
-
-实际上是一个全连接的前馈神经网络，用来作用于每一个词(position)
-$$
-FFN(x) = max(0, xW1 + b1)W2 + b2
-$$
-W1将d=512的x扩大到d=2048，线性相加后Relu，然后用W2将维度降回512，最后再线性相加
-
-##### Positional Encoding
-
-用与embedding后数据位数等长的数据来表示该数据原始的位置信息，相加后即携带了该词的位置信息 		
-
-⑦编码器和解码器的embedding 由于使用了统一的字典所以共享权重
-
-⑧**评价**：Attention并不是ALL you need，其中的前馈神经网络、残差连接都缺一不可 。
-
-### 2.Bert
-
-②Abstract
-
-Bidirectional Encoder Representations from Transformers
-
-Bert全称为transformer模型的双向编码器表示
-
-bert使得NLP的语言模型预训练正式出圈，它与最近的语言表示模型不同，bert通过联合所有层中左右的上下文信息，使用无标签的数据来训练深层双向的表示。预训练的bert模型只需要一个额外的输出层就能得到一个不错的结果。
-
-（论文成果在摘要中写明基于什么工作，并且相对于该工作有何提升，再给出具体的实验数据，绝对精度+与当前最优相比提升的精度）
-
-It obtains new state-of-the-art results on eleven natural language processing tasks, including pushing the GLUE score to 80.5% (7.7% point absolute improvement), MutiNLI accuracy to 86.7% (4.6% absolute improvement) and SQuAD v2.0 Test F1 to 83.1(5.1 point absolute improvment)
-
-已经存在的预训练模型分为基于特征的、基于微调的。
-
-ELMo则属于基于特征的，每个下游任务都要构造一个与其相关的神经网络(RNN架构)，将预训练好的表示作为一个额外的特征同输入一起放入模型，使得模型训练起来比较容易。
-
-GPT则是基于微调的，预训练好的参数在下游只需要微调
-
-以上两个方案在预训练时都使用相同的目标函数，并且都使用单向的语言模型（为预测模型，预测下一个时刻所要输出的语言，故为单向）。
-
-Bert则可用''带掩码的语言模型''(Masked language model, MLM)来减轻语言模型单向的限制，其灵感来自**Cloze task (Taylor，1953)**，具体来说，每次随机从输入中选择一些tokens并将其掩盖，目标函数则去预测这些被盖住的词（相当于进行完形填空），MLM允许去看左右两边的信息，这就使得我们可以训练出双向的深的Transformer
-
-Bert是第一个在句子层面和词元层面取得好成绩的微调模型
-
-
-
-③conclusion
-
-最近一些实验表明，大量的、非监督的预训练对于很多语言模型来说是非常好的，这使得一些即使训练样本比较少的任务可以享受深度神经网络。bert的主要成果就是将已有成果拓展到了深的双向的架构上来，使得同样的预训练模型可以处理大量的不一样的NLP任务
-
-⑤相关工作
-
-非监督的基于特征的工作(ELMO)
-
-非监督的基于微调的工作(GPT)
-
-有标号的数据上做迁移学习
-
-⑥BERT
-
-该框架有两个步骤：1）预训练 2）微调
-
-预训练时模型是在没有标号的数据集上训练的。
-
-在微调时bert模型的权重被初始化为预训练时得到的权重，所有权重在微调时都会参与训练，并且使用的是下游任务的有标号的数据。
-
-每一个下游任务都会单独建立一个模型并进行微调。
-
-bert使用的架构是多层双向的Transformer编码器，该架构基于Transformer原始代码。
-
-输入输出的表示上，输入统一为一个序列，从而无差别地表示一个句子或多个句子。这使得一个句子可以是连续文本中的任意跨度，而不是一个真实语义上的句子。
-
-bert使用WordPiece去切词，每个序列的第一个词永远是[CLS(classificiation)]。句子之间用[SEP]特殊标记来分割。并且可以通过学习到的嵌入层来区分token属于A句子还是B句子
-
- <img src="NLP学习记录.assets/1665126193703.png" alt="1665126193703" style="zoom: 67%;" />
-
-input经过三层embedding后求和，分别是词元本身的向量，所在句子信息向量和整体的position向量，如下图所示。
-
-<img src="NLP学习记录.assets/1665126208275.png" alt="1665126208275" style="zoom:50%;" />
-
-以上为预训练和微调的相同部分。
-
-在预训练时对于每个序列的wordpiece的词元随机选取了15%来进行替换，但由于微调时不存在[MASK]符号，这将导致预训练和微调时数据的不匹配。为了缓和这一问题，将15%被选中的词元中80%的用[MASK]替代，10%的随机替换一个词元，剩余10%不进行操作。以上三种情况都会被标记为用来做预测。
-
-微调时由于句子对放到了一个Transformer块中，所以self-attention可以来回看，比起encoder-decoder架构更优，由此付出的代价是无法再做机器翻译了。
-
-⑦
-
-
-
-step1：准备数据集
-
-step2：设计模型即前馈过程中的元素和表达式
-
-step3：构造损失函数和优化器
-
-step4：进行训练epoch(forward、backward、upgrade)
+后半部分n是匹配长度，其中$p_n<=1$，当n越大时当前项越大，即长匹配有高权重
