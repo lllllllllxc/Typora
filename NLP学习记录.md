@@ -224,7 +224,7 @@ https://blog.csdn.net/chengjinpei/article/details/119835339
 
 中-c pytorch去掉，否则仍使用默认源
 
-## 深度学习术语
+## 机器学习术语
 
 ###### 错误率
 
@@ -242,6 +242,10 @@ Top-5 error同理，且Top-5 error的数值会比Top-1 error低
 
 半监督学习介于两者之间。算法上，包括一些对常用监督式学习算法的延伸，这些算法首先试图对未标识数据进行建模，在此基础上再对标识的数据进行预测
 
+###### corpora
+
+同datasets，即NLP领域的数据集
+
 ###### 模型、数据集评价
 
 https://blog.csdn.net/qq_41554005/article/details/119751518
@@ -256,11 +260,31 @@ DOI( *Digital Object Identifier* ):
 
 https://www.atlantis-press.com/using-dois
 
+###### 迁移学习
+
+迁移学习是一个学习范式，与深度学习平级，可以将部分思想应用于深度学习，fine-tuning是迁移学习在深度学习中效果比较好的一个实现方法，与pre-training同属于深度迁移学习
+
+<img src="NLP学习记录.assets/1666579741751.png" alt="1666579741751" style="zoom:50%;" />
+
+###### fine-tuning
+
+对预训练模型使用有监督或无监督学习，将预训练模型从原域(**source domain**)迁移到目标域(**target domain**)。一般来说原域比较广泛被称为广域(**general domain**)，而目标域为具体任务，被称为任务域(**task domain**)。微调时用到了具体的任务域数据则称该方法为少样本学习(few-shot learning)， 没用到则为零样本学习(zero-shot learning)
+
 ##### 对话生成相关
 
 ###### BLEU
 
 自动的机器翻译的评价方法，其中评价标准包括：充分性、通顺性、精确性	
+
+###### inter-annotator agreement
+
+也称为inter-rater agreement、inter-rater reliability 
+
+用来衡量具体任务中人类评分者间意见一致性的指标
+
+###### Goal Oriented 和Task Oriented
+
+在没有特别说明的情况下，在人机对话系统研究工作中有着相同的含义，它们只是对同一工作的不同描述。
 
 ## NLP学习记录
 
@@ -871,11 +895,55 @@ Word2Vec模型是否属于预训练模型?  `属于`
 
 ###### Attention
 
-对于一个模型(CNN、LSTM)很难决定什么数据重要或不重要
+
+
+人的注意力在心理学中被分为自主性注意力和非自主性注意力，其中非自主性注意力即对外界较为突出输入的直观反映，自主性注意力即自我驱动的受认知和意识控制的
+
+attention构建了Query查询为自主性提示，对于给定的任何查询，注意力机制通过注意力汇聚(attention pooling)将选择引导至感官输入，感官输入为value，每个value都与一个key配对，该key可以被认为是value的非自主性提示
+
+![1666683575288](NLP学习记录.assets/1666683575288.png)
+
+流程为：对于自主性提示Q(想要干什么)，对其与非自主性提示key(已经观测过的环境)进行配对，从而引导出最匹配的感官输入value
+
+对于一个模型(CNN、LSTM)很难决定什么数据重要或不重要(卷积、池化、全连接都只考虑非自主性线索)
+
+**非参**的注意力聚集(pooling)层
+
+对于给定的key-value pair$(x_i,y_i)$，最简单的聚集就是对所有y进行平均化$f(x)=\frac{1}{n}\sum_{i}y_{i} $（f(x)中的x为query）
+$$
+f(x)=\sum_{i=1}^n=\frac{K(x-x_i)}{\sum_{j=1}^{n}K(x-x_j)y_i}\\
+Nadaraya-Watson核回归
+$$
+K为衡量x与xi距离的函数，f(x)中x为query，式子中的x为key，y为value，即通过K计算新输入的query与之前key的相似度，并算分别对应的概率，每个概率对应乘value，最终求和拼出query对应的 y，整个过程无参数即不需要学习 
+
+当K使用高斯核时
+$$
+\begin{aligned}
+f(x)=&\sum_{i=1}^{n}\frac{exp(-\frac{1}{2}(x-x_i)^{2})}{\sum_{j=1}^{n}exp(-\frac{1}{2}(x-x_i)^{2})}y_i\\
+=&\sum_{i=1}^{n}softmax(-\frac{1}{2}(x-x_i)^{2})y_i
+\end{aligned}
+$$
+参数化注意力机制，加入可学习的$w$，该参数可以控制高斯核的大小
+$$
+f(x)=\sum_{i=1}^{n}softmax(-\frac{1}{2}((x-x_i)w)^{2}y_i
+$$
+可以抽象化为$f(x)=\sum_{i}α(x,x_i)y_i$，$α(x,x_i)$即为**注意力权重**
+
+**注意力分数**为未作softmax之前的数值
+
+<img src="NLP学习记录.assets/1666708056034.png" alt="1666708056034" style="zoom:50%;" />
+
+当Q、K、V的长度不同时，通常采用**加性注意力**，即通过可学习的两个W将Q、K映射到与V相同的维度
+
+![1666708693964](NLP学习记录.assets/1666708693964.png)
+
+当Q、K长度相同，则可以直接做内积并除以长度开根号（除长度防止注意力分数过大），称为Scaled Dot-Product Attention
+
+<img src="NLP学习记录.assets/1666708808130.png" alt="1666708808130" style="zoom:50%;" />
 
 <img src="NLP学习记录.assets/1665125901411.png" alt="1665125901411" style="zoom:50%;" />
 
-而人会根据图片中成分的重要性去聚焦
+人会根据图片中成分的重要性去聚焦
 
 注意力机制中则是通过计算查询对象Q和被查询对象V之间的相似度来衡量重要性的
 
@@ -948,6 +1016,12 @@ self-attention相较于RNN、LSTM解决了长序列依赖问题，并且得到�
 <img src="NLP学习记录.assets/1663249568128.png" alt="1663249568128" style="zoom:50%;" />
 
 
+
+自注意力聚集层将xi当作key、value、query来对序列抽取特征
+
+其优点是完全并行、最长序列为1
+
+缺点是对长序列的计算复杂度高
 
 ###### muti-head self-attention
 
@@ -1167,11 +1241,17 @@ encoder将输入编程为中间特征表达，decoder将中间特征编码输出
 
 其中encoder使用的是RNN输出为最后的隐层，将该隐藏状态输出给解码器的隐状态，decoder是没有输出的RNN
 
-，在训练阶段如右图，decoder每次输入的是正确的序列从而避免误差累积
+，在训练阶段如右图，decoder每次输入的是正确的序列从而避免误差累积， 特定的序列开始词元（“<bos>”）和 原始的输出序列（不包括序列结束词元“<eos>”） 拼接在一起作为解码器的输入。 这被称为*强制教学*（teacher forcing）， 因为原始的输出序列（词元的标签）被送入解码器 
 
 而对于推理任务，只能将上一时刻的输出作为下一时刻的输入
 
 ![1666429622913](NLP学习记录.assets/1666429622913.png)
+
+在加入注意力机制后，编码器对每次词的输出作为key和value，解码器RNN对于上个词的输出作为query，
+
+最后attention的输出和下个词的词嵌入合并进入Decoder RNN，即通过最新生成的作为Q去匹配到与其相关度最大的k、v并输入decoder，相较于传统的Seq2seq传递的信息更为有效
+
+![1666880206930](NLP学习记录.assets/1666880206930.png)
 
 ###### BLEU
 
@@ -1186,3 +1266,53 @@ $p_n$是预测中所有n-gram的精度
 其中exp(min())部分是为了防止预测的长度短于标签长度,即$len_{pred}<len_{label}$时将会使计算$e^{-x}$，从而拉低分数
 
 后半部分n是匹配长度，其中$p_n<=1$，当n越大时当前项越大，即长匹配有高权重
+
+###### beam search束搜索
+
+ 贪心搜索选择当前最优，但这并不一定是全局最优
+
+![1666537315719](NLP学习记录.assets/1666537315719.png)
+
+该输出序列的条件概率=0.5\*0.4\*0.4\*0.6=0.048
+
+![1666537338033](NLP学习记录.assets/1666537338033.png)
+
+该输出序列的条件概率=0.5\*0.3\*0.6\*0.6=0.054即比贪心搜索的效果更优
+
+穷举搜索可以得到最优序列，但是计算量太大，实际不可行
+
+束搜索为在每个时刻保存k个最好的候选，并对每一个候选新加1项，假设添加项有n种可能，从k*n个选项中选出最好的k，即如下效果
+
+<img src="NLP学习记录.assets/1666537878921.png" alt="1666537878921" style="zoom:67%;" />
+
+此时k=2，维持A、C，并搜索其下一步A对应的A\~E，C对应的A\~E中选出最好的保留，即选出AB、CE，后对AB搜索出对应A\~E中概率最大的，同样地也对CE进行，最终得出ABD、CED
+
+束搜索的时间复杂度=$O(knT)$
+
+k=1时是贪心搜索，k=n时是穷举搜索
+
+![1666538446605](NLP学习记录.assets/1666538446605.png)
+
+在计算时存储多个中间的子序列，并统一使用以上式子计算概率，其中L为最终候选序列的长度，α通常=0.75，
+
+短序列的$1/L^{α}$>长序列的(L越大整体越小)，长短序列的概率加log之后都是负数，因此$1/L^{α}$对长序列最终的概率起到了增大作用
+
+###### promt learning
+
+提示学习进行分类问题时需要一个 verbalizer标签词映射, 将 [MASK] 位置上或者prompt前缀后的预测单词转化成分类标签。例如 {POLITICS: "politics", SPORTS: "sports"} 这个映射下，预训练模型在 [MASK] 位置对于 politics/sports 这个**标签词**的预测分数会被当成是对 POLITICS/SPORTS 这个**标签**的预测分数。 
+
+使用流程：
+
+1）在句子上添加prompt，一般分为两种形式：i.完形填空(bert等自编码PLM)ii.前缀(GPT等自回归PLM)。具体例子：I love this movie. It is a [MASK] movie. (完形填空) 或 I love this movie. The movie is (前缀).
+
+2）根据prompt的形式，在[MASK]位置或者prompt前缀后面预测单词
+
+3）根据预先定义的Verbalizer将预测单词映射为对应结果，例子中 若预测单词’Good’则情感倾向为正向，若预测结果为单词’Bad’则情感倾向为负向。 
+
+######  **meta-learning** 
+
+元学习
+
+######  **model-agnostic** 
+
+模型无关，MAML提供一个meta-learner用于训练base-learner，即元学习的核心Learning to learn。base-learner 在目标数据集上被训练，并实际用于具体任务。绝大多数深度学习模型都可以作为base-learner无缝嵌入MAML中
