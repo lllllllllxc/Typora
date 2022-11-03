@@ -173,6 +173,38 @@ out:[1, 2, 3, 2, 3, 4, 3, 4, 5]
 
 当元组内嵌套的元素是可变类型比如list时，其不可改变的特性将失去。
 
+**\*args、\*\*kwargs**
+
+args即arguments参数，kwargs即带关键字的arguments
+
+其中args和kwargs只是规范化命名，具体名字可以更改，最重要的是前面的\* 
+
+```python
+def printScores(student,*scores):
+    print(f"Student Name:{student}")
+    for score in scores:
+    	print(score)printScores("Jonathan",100, 95, 88)
+printScores("Jonathan",100, 95, 88)
+out:
+Student Name: Jonathan
+100
+95
+88
+```
+
+```python
+def printPetNames(owner,**pets):
+    print(f"Owner Name:{owner}")
+	for pet,name in pets.items():
+        print(f"{pet}:{name}")
+printPetNames("Jonathan", dog="Brock",fish=["Larry", "Curly","Moe"],turtle="Shelldon")
+out:
+Owner Name: Jonathan
+dog: Brock
+fish: ['Larry', 'Curly', 'Moe']
+turtle: Shelldon
+```
+
 ## 编译器相关
 
 ###### pycharm快捷键
@@ -198,7 +230,7 @@ https://zhuanlan.zhihu.com/p/48962153
 临时换源
 
 ```
-pip3 install 库名 -i 镜像地址
+pip3 install -r requirements.txt -i 镜像地址
 ```
 
 - 阿里云：https://mirrors.aliyun.com/pypi/simple/
@@ -223,6 +255,10 @@ https://blog.csdn.net/chengjinpei/article/details/119835339
 `conda install pytorch torchvision torchaudio cpuonly -c pytorch`
 
 中-c pytorch去掉，否则仍使用默认源
+
+修改默认envs路径
+
+https://m.yisu.com/zixun/724824.html
 
 ## 机器学习术语
 
@@ -937,7 +973,7 @@ $$
 
 ![1666708693964](NLP学习记录.assets/1666708693964.png)
 
-当Q、K长度相同，则可以直接做内积并除以长度开根号（除长度防止注意力分数过大），称为Scaled Dot-Product Attention
+当Q、K长度相同，则可以直接做内积并除以长度开根号（除长度防止长序列注意力分数过大），称为**Scaled Dot-Product Attention**
 
 <img src="NLP学习记录.assets/1666708808130.png" alt="1666708808130" style="zoom:50%;" />
 
@@ -1097,6 +1133,8 @@ Transformer工作流程，其中decoder(masked)通过已生成的单词得到Q�
 
 用Q与源语句K、V做自注意力机制，则可以知道源语句中哪些成分对接下来要生成的词更重要
 
+预测第t+1个输出时，解码器中输入前t个预测值作为key、value，第t个预测值作为query
+
 ###### GPT
 
 ![1663061246125](NLP学习记录.assets/1663061246125.png)
@@ -1104,6 +1142,10 @@ Transformer工作流程，其中decoder(masked)通过已生成的单词得到Q�
 gpt无法做下游任务改造，因为其训练的是整个模型，即已经带有具体任务。对比于ELMo只用来生成更为精确的词向量，其输出结果可以与不同的下游任务对接
 
 ###### bert
+
+在bert之前，需要构建新的网络来抓取新任务需要的信息（word2vec忽略了时序信息，语言模型只看了一个方向）
+
+motivation：1）基于微调的NLP模型 2）预训练的模型抽取了足够多的信息 3）新的任务只需要增加一个简单的输出层
 
 参考了ELMO模型的双向编码思想，借鉴了GPT用Transformer作为特征提取器的思路，采用了word2vec所使用的CBOW方法
 
@@ -1247,6 +1289,8 @@ encoder将输入编程为中间特征表达，decoder将中间特征编码输出
 
 ![1666429622913](NLP学习记录.assets/1666429622913.png)
 
+**Bahdanau注意力**
+
 在加入注意力机制后，编码器对每次词的输出作为key和value，解码器RNN对于上个词的输出作为query，
 
 最后attention的输出和下个词的词嵌入合并进入Decoder RNN，即通过最新生成的作为Q去匹配到与其相关度最大的k、v并输入decoder，相较于传统的Seq2seq传递的信息更为有效
@@ -1316,3 +1360,41 @@ k=1时是贪心搜索，k=n时是穷举搜索
 ######  **model-agnostic** 
 
 模型无关，MAML提供一个meta-learner用于训练base-learner，即元学习的核心Learning to learn。base-learner 在目标数据集上被训练，并实际用于具体任务。绝大多数深度学习模型都可以作为base-learner无缝嵌入MAML中
+
+###### 冲量momentum
+
+使用平滑过的梯度对权重进行更新
+
+对于梯度
+$$
+g_t=\frac{1}{b}\sum_{i∈I_t}▽l_i(x_{t-1})
+$$
+使用冲量对其进行缓冲$v_t=βv_{t-1}+g_t$  $w_t=w_{t-1}-ηv_t$
+
+$v_t$可以展开为$v_t=g_t+βg_{t-1}+β^{2}g_{t-2}+……$
+
+其中β常取[0.5,0.9,0.95,0.99]
+
+即每次更新梯度时考虑之前梯度的数值，从而使得更新后的抖动不过大
+
+###### Adam
+
+对学习率不敏感的非常平滑的SGD，因此不必太多地去调参，效果与SGD+momentum差不多,其使用
+$$
+v_t=β_1v_{t-1}+(1-β_1)g_t
+$$
+通常$β_1$=0.9
+
+展开后$v_t=(1-β_1)(g_t+βg_{t-1}+β^{2}g_{t-2}+……)$
+
+因为$\sum_{i=0}^∞β_1^i=\frac{1}{1-β_1}$，所以权重和为1
+
+由于$v_0=0$,且$\sum_{i=0}^tβ_1^i=\frac{1-β_1^t}{1-β_1}$
+
+修正$v_t^{hat}=\frac{v_t}{1-β_1^t}$，t很大时，$β_1^t=0$ 
+
+同时也记录$s_t=β_2s_{t-1}+(1-β_2)g_{t}^{2}$通常$β_2=0.999$，修正$s_t^{hat}=\frac{s_t}{1-β_2^t}$
+
+计算重新调整后的梯度$g^{'}=\frac{v_t^{hat}}{\sqrt{s_t^{hat}}+з}$，分母即为大的梯度值增加罚项使得选择学习率时可以顾全本身大的或小的梯度
+
+最后更新$w_t=w_{t-1}-ηg_t^{'}$
