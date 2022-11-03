@@ -322,6 +322,27 @@ https://www.atlantis-press.com/using-dois
 
 在没有特别说明的情况下，在人机对话系统研究工作中有着相同的含义，它们只是对同一工作的不同描述。
 
+###### gradient accumulation梯度累加
+
+受显卡内存的影响，运行一些large模型时，batch_size设置的往往比较小， 否则就会‘CUDA out of memory’  但一般batch-size越大(一定范围内)模型收敛越稳定效果相对越好 。梯度累加即累加多个batch的梯度再进行更新
+
+```python
+step = 0
+accum_step = 10
+for epoch in range(epochs):
+    print(f"epochs: {epoch}/{epochs}")
+    for batch in train_dataloader:
+        step += 1
+        input_ids = batch['input_ids'].to(device)
+        labels = batch['decoder_input_ids'].to(device)
+        loss = model(input_ids=input_ids, labels=labels).loss
+        loss = loss / accum_step
+        loss.backward()
+        if step % accum_step ==0:
+            optim.step()
+            optim.zero_grad()
+```
+
 ## NLP学习记录
 
 ###### 1.矩阵乘法
@@ -1299,7 +1320,7 @@ encoder将输入编程为中间特征表达，decoder将中间特征编码输出
 
 ###### BLEU
 
-$p_n$是预测中所有n-gram的精度
+$p_n$是预测中所有n-gram(容量为n个字的滑动窗口)的精度
 
 对于标签序列A **B C D** E F 和预测序列A B B C D而言，p1 = 4/5 (n=1即连续一个预测成功) p2 = 3/4（n=2 连续预测两个成功 AB <u>BB</u> BC CD 中成功预测3个）p3 = 1/3 (n=3 ABB BBC **BCD**中成功1个)
 
