@@ -306,22 +306,6 @@ https://www.atlantis-press.com/using-dois
 
 对预训练模型使用有监督或无监督学习，将预训练模型从原域(**source domain**)迁移到目标域(**target domain**)。一般来说原域比较广泛被称为广域(**general domain**)，而目标域为具体任务，被称为任务域(**task domain**)。微调时用到了具体的任务域数据则称该方法为少样本学习(few-shot learning)， 没用到则为零样本学习(zero-shot learning)
 
-##### 对话生成相关
-
-###### BLEU
-
-自动的机器翻译的评价方法，其中评价标准包括：充分性、通顺性、精确性	
-
-###### inter-annotator agreement
-
-也称为inter-rater agreement、inter-rater reliability 
-
-用来衡量具体任务中人类评分者间意见一致性的指标
-
-###### Goal Oriented 和Task Oriented
-
-在没有特别说明的情况下，在人机对话系统研究工作中有着相同的含义，它们只是对同一工作的不同描述。
-
 ###### gradient accumulation梯度累加
 
 受显卡内存的影响，运行一些large模型时，batch_size设置的往往比较小， 否则就会‘CUDA out of memory’  但一般batch-size越大(一定范围内)模型收敛越稳定效果相对越好 。梯度累加即累加多个batch的梯度再进行更新
@@ -342,6 +326,103 @@ for epoch in range(epochs):
             optim.step()
             optim.zero_grad()
 ```
+
+
+
+##### 对话生成相关
+
+###### One-To-Many
+
+即开放域对话合适的response是无限的，但认为设计的Reference是有限的(一般为5条左右),这就导致开放域对话评测回复质量时使用 基于对比Reference和Response相似性的Overlap-based 方法和Embedding-based方法存在很大局限性。
+
+ Learning-based 方法基于模型打分和人工打分的均方误差来优化模型参数，期望逼近人类的打分，相比于先前两种更有优势
+
+###### BLEU
+
+自动的机器翻译的评价方法，其中评价标准包括：充分性、通顺性、精确性	
+
+###### Distinct
+
+同过计算不同的n-grams用来辅助评价生成回复的多样性(防止生成一些万能回复)，不同的n-grams越多，则说明回复越具有多样性。
+$$
+Distinct = \frac{Different\space n{-}gram}{Total\space n{-}gram}
+$$
+
+###### F1
+
+评测生成的句子与golden回复的重叠度
+$$
+F1=2*\frac{precision*recall}{precision+recall}
+$$
+
+$$
+F_β=(1+β^2)*\frac{precision*recall}{(β^2*precision)+recall}
+$$
+
+n1 = 生成回复和golden回复之间重叠的字节数 
+
+n2 = 生成回复的字节数
+
+n3 = golden回复的字节数
+
+
+$$
+Recall=\frac{n1}{n3}
+$$
+
+$$
+Precision = \frac{n1}{n2}
+$$
+
+
+
+###### inter-annotator agreement
+
+也称为inter-rater agreement、inter-rater reliability 
+
+用来衡量具体任务中人类评分者间意见一致性的指标
+
+###### Goal Oriented 和Task Oriented
+
+在没有特别说明的情况下，在人机对话系统研究工作中有着相同的含义，它们只是对同一工作的不同描述。
+
+在NLU(领域分类、意图识别、槽填充)的基础上进行对话状态追踪(DST)以及对话策略学习(DPL)
+
+###### slot-filling 槽填充
+
+>One way of making sense of a piece of text is to tag the words or tokens which carry meaning to the sentences. In the field of Natural Language Processing, this problem is known as **Semantic Slot Filling**.——mc.ai
+
+ 从大规模的语料库中抽取给定实体（query）的被明确定义的属性（slot types）的值（slot fillers）
+
+ 填槽目的是为了让用户意图转化为用户明确的指令而补全信息的过程 
+
+ NLU（Natural Language Understanding）自然语言理解希望机器像人一样，具备正常人的语言理解能力即需要知道人的意图。 
+
+ 而槽填充的目的和NLU是一致的，它为机器提供一个规范的语义表示 ，例子：
+
+- 帮我订张机票，从杭州出发 
+
+此处应填充两个槽，[机票]、[杭州]填入[交通工具]、[目的地]
+
+###### 对话状态
+
+$S_t$即一种包含0时刻到t时刻的对话历史、用户目标、意图和槽值对的数据结构
+
+###### 对话状态追踪DST(dialogue state tracking)
+
+根据领域(domain)/意图(intention)、槽值对(slot-value pairs)、之前状态以及之前系统的Action etc.来追踪当前状态
+
+ 它的输入是 un （n时刻的意图和槽值对，也叫用户Action）、 an−1 （n-1时刻的系统Action）和 sn−1 （n-1时刻的状态），输出是 sn （n时刻的状态）。 
+
+对话管理DM包括对话状态追踪DST和对话策略学习DPL(dialogue policy learning)
+
+![1667807962576](NLP学习记录.assets/1667807962576.png)
+
+###### Dialogue Disentanglement 对话解纠缠
+
+任务目的是在多人对话场景下，将一个完整且复杂的对话从数据流中分离为多条基于相似主题的线程，以便每条单独的线程都与特定的主题有关	
+
+ 
 
 ## NLP学习记录
 
@@ -757,7 +838,7 @@ seq_len=3时$p(x,x',x'')=p(x)p(x'|x)p(x''|x,x')=\frac{n(x)}{n}\frac{n(x,x')}{n(x
 
 三元语法 τ=2 每个token至多与其前两个相关 $p(x_1,x_2,x_3,x_4)=p(x_1)p(x_2|x_1)p(x_3|x_1,x_2)p(x_4|x_2,x_3)$
 
-语言模型的输出就是判断下一个token，若字典大小为m，则为m分类问题，可以使用CrossEntropyLoss来衡量损失
+语言模型的输出就是判断下一个token，若字典大小为m，则为m分类问题，可以使用CrossEntropyLoss(**自带softmax**)来衡量损失
 
 衡量一个语言模型好坏可以使用**平均交叉熵**：
 
@@ -1318,7 +1399,9 @@ encoder将输入编程为中间特征表达，decoder将中间特征编码输出
 
 ![1666880206930](NLP学习记录.assets/1666880206930.png)
 
-###### BLEU
+thinking:是否可以将生成的所有作为Q去匹配，或者由于隐式传递，生成时无法控制已经生成的token的重要性而直接作为Q去匹配，即是否可以对历史生成进行加权，重新增加其占比。
+
+###### BLEU(bilingual evaluation understudy)
 
 $p_n$是预测中所有n-gram(容量为n个字的滑动窗口)的精度
 
@@ -1418,4 +1501,4 @@ $$
 
 计算重新调整后的梯度$g^{'}=\frac{v_t^{hat}}{\sqrt{s_t^{hat}}+з}$，分母即为大的梯度值增加罚项使得选择学习率时可以顾全本身大的或小的梯度
 
-最后更新$w_t=w_{t-1}-ηg_t^{'}$
+最后更新$w_t=w_{t-1}-ηg_t^{'}$			
