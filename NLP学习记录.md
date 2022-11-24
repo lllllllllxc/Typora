@@ -267,6 +267,10 @@ https://blog.csdn.net/chengjinpei/article/details/119835339
 
 https://m.yisu.com/zixun/724824.html
 
+查看cuda版本
+
+nvcc --version 
+
 ## 机器学习术语
 
 ###### 错误率
@@ -334,7 +338,27 @@ for epoch in range(epochs):
             optim.zero_grad()
 ```
 
+###### temperature
 
+知识蒸馏中的概念，即蒸馏的温度，调节该超参是为了更好的让隐藏知识挥发和凝结。[Distilling the Knowledge in a Neural Network  ](papers/Distilling the Knowledge in a Neural Network.pdf)Hinton在该文章中首次提出了Softmax with Temperature.
+
+ 温度系数较大时，模型需要训练得到一个很陡峭的输出，经过 softmax 之后才能获得一个相对陡峭的结果；温度系数较小时，模型输出稍微有点起伏，softmax 就很敏感地把分布变得尖锐，认为模型学到了知识。 
+
+![1669208449279](NLP学习记录.assets/1669208449279.png)
+
+![1669208463631](NLP学习记录.assets/1669208463631.png)
+
+###### 模型蒸馏
+
+ 将原始数据集上训练的重量级（cumbersome）模型作为教师，让一个相对更轻量的模型作为学生。 
+
+ 对于相同的输入，让学生输出的概率分布尽可能的逼近教师输出的分布，则大模型的知识就通过这种监督训练的方式「蒸馏」到了小模型里。小模型的准确率往往下降很小，却能大幅度减少参数量，从而降低推断时对 CPU、内存、能耗等资源的需求。 
+
+ 对于模型蒸馏，损失函数可以表示为 ，$KL(q_t||q_s)$表示用学生模型的输出分布$q_s$来拟合教师模型的输出分布$q_t$。
+
+######  R-Drop
+
+https://spaces.ac.cn/archives/8496
 
 ##### 对话生成相关
 
@@ -430,6 +454,10 @@ $S_t$即一种包含0时刻到t时刻的对话历史、用户目标、意图和�
 ###### Dialogue Disentanglement 对话解纠缠
 
 任务目的是在多人对话场景下，将一个完整且复杂的对话从数据流中分离为多条基于相似主题的线程，以便每条单独的线程都与特定的主题有关	
+
+###### ground-truth
+
+真实的有效值或者是**标准的答案** 
 
 ###### 对话数据集
 
