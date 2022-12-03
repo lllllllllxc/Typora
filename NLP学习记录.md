@@ -212,6 +212,18 @@ fish: ['Larry', 'Curly', 'Moe']
 turtle: Shelldon
 ```
 
+**getattr(object, name[, default])**
+
+```python
+Return the value of the named attribute of object. 
+name must be a string. 
+If the string is the name of one of the object's attributes, the result is the value of that attribute. For example, getattr(x, 'foobar') is equivalent to x.foobar. If the named attribute does not exist, default is returned if provided, otherwise AttributeError is raised.
+```
+
+
+
+
+
 ## 编译器相关
 
 ###### pycharm快捷键
@@ -371,6 +383,8 @@ https://spaces.ac.cn/archives/8496
 ###### BLEU
 
 自动的机器翻译的评价方法，其中评价标准包括：充分性、通顺性、精确性	
+
+https://coladrill.github.io/2018/10/20/%E6%B5%85%E8%B0%88BLEU%E8%AF%84%E5%88%86/
 
 ###### Distinct
 
