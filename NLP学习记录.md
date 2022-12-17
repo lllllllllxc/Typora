@@ -500,6 +500,14 @@ $S_t$即一种包含0时刻到t时刻的对话历史、用户目标、意图和�
 
 步骤：1）用户意图判断 2）文本检索召回 3）文本匹配计算排序
 
+###### IOB（Inside-Outside-Beginning）tagging
+
+命名实体识别(NER)中的常用方法
+
+>‘B’ represents the beginning of a chunk, and ‘I’ indicates that this tag is inside a target chunk. For those unrelated tokens, an ‘O’ is used indicating that this token is outside of any chunk of interest.
+
+![1671242761018](NLP学习记录.assets/1671242761018.png)
+
 ###### 知识图谱
 
 https://github.com/zhihao-chen/QASystemOnMedicalKG
