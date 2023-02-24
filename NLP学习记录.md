@@ -292,6 +292,10 @@ https://m.yisu.com/zixun/724824.html
 
 nvcc --version 
 
+###### LaTex
+
+https://blog.csdn.net/haohaoxuexi010/article/details/110912833
+
 ## 机器学习术语
 
 ###### 错误率
@@ -393,6 +397,10 @@ $P(Y|X)=\prod_{j=1}^JP(y_i|X,y_1,……,y_{i-1})$
 
 其中的X即为condition
 
+######  Ontologies 
+
+领域Ontologies描述的是某个特定领域（如医药、地理等）中的概念及概念之间的关系；任务Ontologies描述的是特定任务或行为中的概念及概念之间的关系；应用Ontologies描述的是依赖于特定领域和任务的概念及概念之间的关系。 
+
 ##### 对话生成相关
 
 ###### One-To-Many
@@ -482,7 +490,11 @@ $S_t$即一种包含0时刻到t时刻的对话历史、用户目标、意图和�
 
  它的输入是 un （n时刻的意图和槽值对，也叫用户Action）、 an−1 （n-1时刻的系统Action）和 sn−1 （n-1时刻的状态），输出是 sn （n时刻的状态）。 
 
-对话管理DM包括对话状态追踪DST和对话策略学习DPL(dialogue policy learning)
+###### 对话策略学习DPL(dialogue policy learning)
+
+
+
+对话管理DM包括对话状态追踪DST和对话策略学习DPL
 
 ![1667807962576](NLP学习记录.assets/1667807962576.png)
 
@@ -529,6 +541,12 @@ https://zhuanlan.zhihu.com/p/423021503
 ###### question
 
 1. 任务导向对话是通过多轮对话完成最终目标任务，每一轮对话都采取最适合的决策，即是一个多步决策求取reward最大化的问题，也就是一个RL问题。该情况下**使用有监督学习建模是有缺陷的，难以从整个对话session层次上去优化每轮对话的决策?**
+
+## RL
+
+###### 1.Markov decision process
+
+###### 2.semiMarkov decision process 
 
 ## NLP学习记录
 
