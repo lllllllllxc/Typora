@@ -548,6 +548,16 @@ https://zhuanlan.zhihu.com/p/423021503
 
 ###### 2.semiMarkov decision process 
 
+## 医疗对话系统
+
+###### medical consultation records (MCRs)
+
+![1677400479166](NLP学习记录.assets/1677400479166.png)
+
+>MCR consists of three parts: the patient’s self-provided report (i.e. self-report), multi-turn doctor–patient dialogue and the corresponding disease category
+
+自我报告可以被当作对话中的第一句。
+
 ## NLP学习记录
 
 ###### 1.矩阵乘法
