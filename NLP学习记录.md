@@ -225,7 +225,9 @@ If the string is the name of one of the object's attributes, the result is the v
 
 
 
+**collate_fn_train**
 
+传值方式：lambda表达式、自定义函数（将函数重写在\__call\__里）
 
 ## 编译器相关
 
