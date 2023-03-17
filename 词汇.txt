@@ -1,0 +1,373 @@
+LCCC
+facilitate 促进
+All the pre-trained models and the datasets are released to facilitate future research.
+technical forums 技术论坛
+Other researchers resort to construct high-quality dialogue datesets by crowdsourcing
+resort to 求助于
+evolved升级版的
+ubiquitous 普遍存在的
+affinities 任务公用性；类同、
+--------------------------------------
+GODEL
+As the same indicates 顾名思义
+Goal Oriented 和Task Oriented
+在没有特别说明的情况下，在人机对话系统研究工作中有着相同的含义，它们只是对同一工作的不同描述。
+amenable 经得起检验的
+speak to证明
+Our results on these diverse tasks speak to the effectiveness of our approach.
+e.g.= for example
+i.e.=namely
+long-standing obstacle 长期存在的问题
+capitalize on 利用
+BlenderBot (Roller et al., 2021) contributes a variety of models that capitalize on skills including personality, empathy, and knowledge,
+engaging 迷人的
+engagingness 新颖度
+
+the same fashion 方式
+ad-hoc专门的
+heterogeneous异质的
+
+significance is computed using a paired 2-sided t-test against the best competitor.
+
+empathetic共情的
+snapshot快照
+apprentice新手
+
+disentangle分辨清楚
+In our evaluation setup we have been able to disentangle intrinsic and extrinsic evaluation, which respectively capture Utility and Humanness
+
+proposition观点
+The evidence that extrinsic evaluation enjoys greater inter-annotator agreement and correlation with automated evaluati                         on metrics further supports this proposition.
+
+overarching 首要的
+well-formedness 符合语法 well-formed	
+paraphrasing 解述
+we hypothesize that usefulness in tasks such as QA and knowledge-grounding requires getting factual information exactly right (e.g., a year or a person’s name) with little need or room for paraphrasing.
+decent 得体的 合适的 indecent
+
+A word is like this - house. "House" is a word. It is one word and it has 5 letters (1)h (2)o (3)u (4)s (5)e.
+In English, the alphabets are called "letters": abcdefghijklmnopqrstuvwxyz.
+And the numbers 1-9 and 0 are called "numerals": 1234567890.
+And things like a stop . and a comma , and a question mark ? are called "punctuation marks".
+Special marks like @#%&* are called "symbols".
+And all of these things are called "characters": abcde 12345 .,?!' @#%&*
+
+For example, " syuo_19-5-11 " has 12 characters.
+And " OldGeezer " has 9 characters.
+
+Also, in English, a Chinese character is like this 屋 . It is one word, and it is written with one symbol, so it is one character. So in Chinese, a word and a character can be the same thing.
+
+-----------------------------
+survey
+are carried out 开始进行研究
+As a result, a multitude of novel works on this task are carried out
+two streams of research
+To the best of our knowledge据我们所知
+
+
+eng
+there is no room for complacency although of course we have made progress.
+etc/et'set r /等等
+stroke 中风
+
+--------------------------------
+prompt
+
+ushering引领
+ushering in a new era of modern natural language processing
+verbalizer 标签词映射
+expediently 方便地
+truncation  truncate 截断	
+Fine-Grained 细粒度的
+clarity 清晰易懂
+backbone 主干
+inconclusive 不确定的
+respirator 口罩
+-----------------------------------------
+Dialogue survey
+converse 交谈
+be retrieved from 从……中检索到
+retrieval-based 基于检索的
+finiteness 有限性
+pipeline 管道；流水线
+comprehensive 全面的 outdated 过时的
+fixed 固定的
+Most if not all 即使不是全部，也是绝大部分
+including but not limited to 包括但不仅限于
+parsing 和 analysis区别？
+picture
+to provide readers with a picture from the model’s perspective
+rather helpful 更有帮助
+Hierarchical /ˌhaɪəˈrɑːkɪk(ə)l/等级制的
+discrete 各自的
+inductive 归纳的
+mitigates 缓和
+intermediate 中间的
+hippocampus 海马体
+On top of that 除此之外
+reuse 再利用
+rather unsatisfying 相当不满意的
+indicated that they were limited which made communicating with them a rather unsatisfying experience for human beings.
+consensual and generic responses  万能回复
+engaging 吸引人的
+ubiquitous 无处不在的
+wherein 以什么方式
+A similar effect can be obtained by augmenting the training dataset with copies of the dialogs wherein the personality sentences are shuffled
+scalability 可扩展性
+interrogative 疑问的
+terminologies 术语
+fuse 结合 fusion
+applied a multi-class classifier to flexibly fuse three distributions
+disentanglement 解纠缠
+to which
+The pointer module pointed to the ancestor message to which the current message replies and a classifier predicted whether two messages belonged to the same thread
+indistinguishable 难以区分的
+simulator 模拟器；模拟者
+In a nutshell 简而言之
+Comparatively相较地
+intercorrelated 相互关联
+modular 模块化的
+calibrates 矫正
+This module iteratively calibrates the dialogue states based on the current input and dialogue history
+ground-breaking 开创性的
+lay emphasis  on 
+Zhang et al. (2019a) argued that the hierarchical encoder-decoder does not lay enough emphasis on certain parts
+granularity 粒度
+discrete latent variables 离散的隐变量
+treated the dialogue states as discrete latent variables to reduce the reliance on turn-level DST labels
+a handful of 少量的(一小撮；一把)
+-----------------------------------
+UNIDS
+aforementioned前面提及的
+compatible 兼容的  competent胜任的
+compatible for both chit-chat and taskoriented dialogues
+comparably 相当地
+UniDS works comparably well as the pure chit-chat system
+design->devise
+Different methods are devised for these two types of dialogue systems separately. 
+
+Then ->Afterwards之后
+justification=reason
+For fair comparisons
+w.r.t. = with respect to 关于
+be acquired by 
+Specifically, UBAR is acquired by fine-tuning the large pretrained unidirectional language model GPT-2 on the sequence of the entire dialog session which is composed of user utterance, belief state, database result, system act, and system response of every dialog turn.
+------------------------------------------
+UBAR
+consecutive连续的
+detrimental有害的
+amend v.改进n.补偿
+This encourages UBAR to adaptively supplement and make amends in response to the current user utterance
+undergoes 经历
+it first undergoes pre-training on a large number of out-ofdomain dialog turns
+delexical 虚化的
+catastrophic 灾难性的
+underscores 强调
+the big gap between few-shot BM and UBAR trained on all domains underscores the data hungry nature of end-to-end task-oriented dialog modeling
+incoming 进来的
+It makes sense to keep track of the belief states and add in or make adjustment to them given incoming user utterance
+understudy 替补
+unidirectional单向的
+heuristic 启发式的
+decouple 使分离
+bracketed 被纳入到{}中
+---------------------------
+ConvLab-2
+in-depth彻底的
+topology 拓扑学
+asynchronously 异步地
+--------------------------------------
+ReMeDi
+coarse-grained 粗粒度的
+main-subordinate 主从结构的
+pseudo 假的
+to facilitate future research
+follow-up 后续的
+overlooked 忽略
+decompose 分解
+Recent work considers MDSs as a kind of TDS by decomposing a MDS system into well-known sub-tasks, e.g., natural language understanding (NLU) , dialogue policy learning (DPL) , and natural language generation (NLG).
+assurance 保证；保险
+delexicalization 虚词化；去词汇化
+monolithic 整体的
+implications for 影响
+The resources released with this work have broader implications in that
+underexplored 未充分开发的
+-------------------------------------
+AIdoctor
+be characterized by 具有了……特点
+have been characterized by a diverse range of architectures and objectives
+proliferation (数量的)激增
+This limits the proliferation of scientific progress to real-world systems
+modality 形式
+on-ramp 入口闸道，此处为切入点
+We offer practical suggestions for addressing these as an on-ramp for future work.
+
+synthesis of prior work 综合 
+holistic 全面的
+delve into 钻进
+Although they provide an excellent holistic portrait of the subfield, they do not delve into aspects of particular interest in healthcare settings
+breading 提升(添彩)
+used a wider search breading their ability to provide extensive technical depth
+screened 筛选过的
+which were then screened using a more thorough taxonomy as part of the analysis
+in concert with 与……相呼应
+premier 最重要的
+in-house 内部的
+abbreviation 缩写词
+compliance with 遵守
+Questions or uncertainties regarding a paper’s compliance with inclusion criteria
+facets 方面
+Task-oriented dialogue systems can potentially impact many facets of healthcare in society
+a close analogue for A与B很相似
+systems in the cognitive or developmental health domain were a close analogue for individuals with conditions impacting memory, executive, or other cognitive function
+were targeted towards 面向
+Systems in the physical health domain were targeted towards individuals
+closely aligned with 紧密联系
+Some system objectives may be closely aligned with a single domain, whereas others may occur in many different domains
+adoption or adherence 采纳
+with respect to 关于
+adoption or adherence with respect to healthcare outcomes 
+be of particular interests 特别有意义 
+settings背景
+Engagement may be of particular interest in healthcare settings
+Target Audience 目标受众
+caregivers 护工
+clinician 临床医师
+conduct实施
+Most general-domain dialogue systems research has been conducted in English
+pronounced 明显的
+This is even more pronounced in the healthcare domain
+qualitatively and quantitatively 质量上
+We examined the means through which systems were evaluated both qualitatively and quantitatively.
+architectural homogeneity 架构上的同质化
+This architectural homogeneity limits our understanding of good design practice within this domain
+obfuscated 模糊的
+exacerbate 恶化
+in parallel with 同时
+to date 到目前为止
+We recommend further experimentation with architectural design, in parallel with work towards developing high-quality healthcare dialogue datasets, which to date remain scarce
+impede 阻碍- hinder
+adequate 充足的
+safeguard against 预防
+therapeutic stress 医疗压力
+Telemedicine 远程医疗/在线医疗
+gastroenterology 肠胃病学
+respiratory 呼吸系统
+dermatology 皮肤学
+colloquial 口语的；非正式的
+outpatient 门诊服务
+Intensive Care Units ICU
+The scenario of the former is outpatient procedure while the data from the latter is generated from Intensive Care Units (ICU).
+terminology 术语
+data-deficient 数据缺乏的
+first attempt to 首次尝试
+In this paper, we make the first attempt to develop dialog generation models about COVID-19
+synthetic 合成的
+real and synthetic data
+on top of =  in the wake of 紧接着
+underserved 缺医少药的
+especially to those who are underserved medically
+alluring 诱人的
+due to its promising potentials and
+alluring commercial values, research about task oriented dialogue system (DS) has attracted increasing attention in different domains
+
+derived from 来源于
+pertinent 相关的
+instantiate 列举
+two-fold 分两部分的
+Contributions are two-fold:
+-----------------------------------
+Task-oriented Dialogue System for Automatic Diagnosis
+is factored into 被分为了
+In practice, the user state su is factored into an agenda A (Schatzmann et al., 2007) and a goal G, noted as su = (A,G)
+
+
+----------------------------------------
+Inquire and Diagnose
+
+anatomical models结构化模型
+monolithic model单一构件的模型
+ensemble 集成式(结构化多模块的)  markdely->very
+our ensemble approach obtains markedly higher disease-prediction accuracy
+
+----------------------------------------
+InstructGPT
+encompasses 包括
+This encompasses both explicit intentions such as following instructions and implicit intentions such as staying truthful, and not being biased, toxic, or otherwise harmful.
+hallucination幻觉
+disproportionately不成比例地 minority 少数的
+For example, when generating text that disproportionately affects a minority group, we may want the preferences of labelers belonging to that group to be weighted more heavily.
+steerability 导向性
+Getting models to do what we want is directly related to the steerability and controllability literature
+----------------------------------------------
+Task-oriented Dialogue System for Automatic Diagnosis
+cumulative 积累的
+Correct symptom query and disease diagnosis will be rewarded, and the policy is learned by maximizing the expected cumulative rewards.
+introspective内省的
+monolithic 整体的
+It shows that a particular disease is usually related to a certain group of symptoms.
+triage分诊
+conform 符合
+conforms to the problemsolving logic for disease diagnosis in the real environment
+inter alia尤其是
+HRL has been successfully applied to different scenarios, inter alia, course recommendation , visual dialog , relation extraction and composite tasks with slot constraints
+In the SymCat database, each disease is linked with a set of symptoms, where each symptom has a probability indicating how likely the symptom is identified for the disease 
+		
+-------------------------------
+DIALMED
+
+generic 一般的 colloquial非正式的、口语的
+we normalize the medications since
+there are many generic names, trade names, or colloquial expressions for the same drug in dialogues
+fragmentary碎片化的
+outpatient procedure门诊流程
+hereinafter 在下文中
+consecutive 连续的
+comprehensively 全面地
+Secondly, our method comprehensively captures the structural and semantic information of QA pairs, which is key to understanding conversations
+aggregate 整合
+GAT is employed to automatically aggregate semantic and structure features on QA Dialogue Graph
+relatedness关联性
+prescribe 开(药)
+j is prescribed by the doctor in dialogue i
+noting注意
+In addition, it is worth noting that the performance varies over three departments
+workload工作量
+---------------------------
+DxFormer
+
+upper bound 上限	
+Although these systems have achieved considerable diagnostic accuracy, they are still far below its performance upper bound due to few turns of interaction with patients and insufficient performance of symptom inquiry
+on par with 与……相同
+Considering the performance of these baseline models on the
+MZ-10 dataset, the diagnostic accuracy is only on par with the lower bound of the SVM classifier (see Table 1), which suggests that these systems approximately degenerate into disease classifiers that are very weak at finding implicit symptoms.
+------------------
+Diaformer
+unidirectional单向的
+Schematic概要
+the symptom recall determines the integrity of the symptom features完整性
+discrete objective离散目标
+-----------------------------
+medical-related
+
+ischemic 缺血性的
+respiratory system 呼吸系统
+endocrine system 内分泌系统
+pediatric department 儿科
+allergic rhinitis 过敏性鼻炎
+rhinitis 鼻炎
+pneumonia 肺炎
+pre-examination 预检 triage 分诊
+gastroenterology 肠胃病学
+dermatology 皮肤病学
+bronchi支气管 bronchitis支气管炎 
+heart failure 心力衰竭
+upper respiratory infection 上呼吸道感染
+ dyspepsia消化不良
+pediatric/infantile diarrhea 幼儿腹泻
+type 2 diabetes 二型糖尿病
+autism spectrum disorders 孤独症谱系障碍
+diarrhea 腹泻
+合成
+synthesis of properly empathetic speech
+AGI即Artificial general intelligence 通用人工智能

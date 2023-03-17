@@ -546,6 +546,10 @@ https://zhuanlan.zhihu.com/p/423021503
 
 ## RL
 
+###### 定义
+
+强化学习的目的即在agent与environment之间交互的过程中，训练一个policy，使得agent在将当前state信息输入到policy之后输出的action可以在environment中得到一个较大的reward
+
 ###### 1.Markov decision process
 
 ###### 2.semiMarkov decision process 
@@ -1602,6 +1606,10 @@ k=1时是贪心搜索，k=n时是穷举搜索
 在计算时存储多个中间的子序列，并统一使用以上式子计算概率，其中L为最终候选序列的长度，α通常=0.75，
 
 短序列的$1/L^{α}$>长序列的(L越大整体越小)，长短序列的概率加log之后都是负数，因此$1/L^{α}$对长序列最终的概率起到了增大作用
+
+###### sampling decoding
+
+ Sampling-based decoding和beam search类似，每个decoding step，首先算出最可能的一个token集合，然后以某种概率分布（通常是和神经网络最后的logit值正相关）从中采样n个候选答案。和beam search区别是用softmax代替argmax，通常用于开放式或者需要创造性的生成任务上，比如写故事/写诗之类。 
 
 ###### promt learning
 
