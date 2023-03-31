@@ -347,6 +347,34 @@ unidirectional单向的
 Schematic概要
 the symptom recall determines the integrity of the symptom features完整性
 discrete objective离散目标
+
+
+gpt-4
+dotted diagonal line 虚线对角线
+----------------------------------
+is borrowed to 用来
+Despite the various designs, here we discuss and analyse the approaches under a more consistent and accessible term ‘delta-tuning’, where ‘delta’ a mathematical notation often used to
+denote changes, is borrowed to refer to the portion of parameters that are ‘changed’ during training.
+
+has ushered in 带来了
+Subsequently, the advancement in pre-trained language models (PLMs) using deep transformers as their foundation has ushered in a new era of NLP
+unprecedented 前所未有的
+
+overtake 赶上
+Although in-context learning has shown promising performance for PLMs such as GPT-3, fine-tuning still overtakes it under the task-specific setting.
+
+predominant approach 主流的方法
+spawn 催生出
+The empirical evidence takes us one step closer to understanding how pre-trained models work and may even spawn
+ new theoretical questions that are worth exploring.
+explore 探讨
+In terms of empirical studies, we carry out extensive and systematic experiments (Results) on over 100 NLP tasks to rigorously explore the performances, combinability, the power of scale, transferability and so on.
+non-trivial performance 不凡的效果
+Delta-tuning yields consistent and non-trivial performance on more than 100 NLP tasks，showing that it is an effective and lightweight alternative to conventional fine-tuning.
+predominantly outperforms 压倒性地胜于
+
+……，highlighting the promising practical value of adapting super-large PLMs.
+体现了调节大规模预训练语言模型的实验前景
 -----------------------------
 medical-related
 

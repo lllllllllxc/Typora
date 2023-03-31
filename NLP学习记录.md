@@ -220,14 +220,95 @@ turtle: Shelldon
 ```python
 Return the value of the named attribute of object. 
 name must be a string. 
-If the string is the name of one of the object's attributes, the result is the value of that attribute. For example, getattr(x, 'foobar') is equivalent to x.foobar. If the named attribute does not exist, default is returned if provided, otherwise AttributeError is raised.
+If the string is the name of one of the object's attributes, 
+the result is the value of that attribute. For example, getattr(x, 'foobar') is equivalent to x.foobar. 
+If the named attribute does not exist, default is returned if provided, otherwise AttributeError is raised.
+```
+
+**set.union**()
+
+```python
+l1 = list([1,2,3])
+l2 = list([1,4,5])
+s1 = set(l1).union(l2)
+s1
+Out：{1, 2, 3, 4, 5}
 ```
 
 
 
-**collate_fn_train**
 
-传值方式：lambda表达式、自定义函数（将函数重写在\__call\__里）
+**collate_fn_train**
+传值方式：lambda表达式、自定义函数（将函数重写在\__call\__里）、将其中的变量声明为全局变量global
+
+**pickle**
+将对象转为字符串序列进行存储
+
+```python
+def save_pickle(obj, path, verbose: bool = False):
+    with open(path, 'wb') as f:
+        pickle.dump(obj, f)
+    if verbose:
+        print('dumping pickle formatted model to {}.'.format(path))
+```
+
+从.pkl文件中重新加载对象
+
+```python
+def load_pickle(path):
+    with open(path, 'rb') as f:
+        obj = pickle.load(f)
+    print('loading pickle formatted model from {}.'.format(path))
+    return obj
+```
+
+
+
+###### PyTorch
+
+**拼接函数**
+
+stack
+
+```python
+# 沿着一个新维度对输入张量序列进行拼接.序列中所有的张量都应该为相同形状
+# outputs = torch.stack(inputs, dim=?) → Tensor
+T1 = torch.tensor([[1],
+                   [2]])
+T2 = torch.tensor([[3],
+                   [4]])
+T3 = torch.tensor([[5],[6],[7]])
+
+torch.stack((T1,T2),dim=0).shape
+Out: torch.Size([2, 2, 1])
+    
+torch.stack((T1,T2,T3),dim=0).shape
+Out: RuntimeError: stack expects each tensor to be equal size, but got [2, 1] at entry 0 and [3, 1] at entry 2
+torch.stack((T1,T2),dim=3).shape
+Out: IndexError: Dimension out of range (expected to be in range of [-3, 2], but got 3)
+```
+
+
+
+cat
+
+```python
+#将多个张量拼接成一个张量
+#stack与cat的区别在于，torch.stack()函数要求输入张量的大小完全相同，得到的张量的维度会比输入的张量的大小多1，并且多出的那个维度就是拼接的维度，那个维度的大小就是输入张量的个数
+#outputs = torch.cat(inputs, dim=?) → Tensor
+x1 = torch.tensor([
+                    [[1,2],[1,2]],
+                    [[3,4],[3,4]]
+                  ])#torch.Size([2, 2, 2])
+x2 = torch.tensor([[[5],[6]],[[2],[3]]])#torch.Size([2, 2, 1])
+torch.cat((x1,x2),dim=2)
+Out: tensor([[[1, 2, 5],
+        	[1, 2, 6]],
+        	[[3, 4, 2],
+         	[3, 4, 3]]])#torch.Size([2, 2, 3])
+```
+
+
 
 ## 编译器相关
 
@@ -254,6 +335,10 @@ ctrl+D删除代码内整行
 pytorch(Conda+App)默认路径修改:
 
 https://zhuanlan.zhihu.com/p/48962153
+
+anaconda迁移后启动失效
+
+D:\Anaconda3\envs\pytorch_gpu\share\jupyter\kernels\python3为中kernel.json默认路径未修改
 
 ###### pip
 
