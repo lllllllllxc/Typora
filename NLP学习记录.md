@@ -274,14 +274,20 @@ stack
 # 沿着一个新维度对输入张量序列进行拼接.序列中所有的张量都应该为相同形状
 # outputs = torch.stack(inputs, dim=?) → Tensor
 T1 = torch.tensor([[1],
-                   [2]])
+                   [2]])（2*1）
 T2 = torch.tensor([[3],
-                   [4]])
+                   [4]])（2*1）
 T3 = torch.tensor([[5],[6],[7]])
 
-torch.stack((T1,T2),dim=0).shape
+s_1 = torch.stack((T1,T2),dim=0)
+s_1.shape
 Out: torch.Size([2, 2, 1])
-    
+s_1:
+tensor([[[1],
+         [2]],
+
+        [[3],
+         [4]]])
 torch.stack((T1,T2,T3),dim=0).shape
 Out: RuntimeError: stack expects each tensor to be equal size, but got [2, 1] at entry 0 and [3, 1] at entry 2
 torch.stack((T1,T2),dim=3).shape
@@ -306,6 +312,22 @@ Out: tensor([[[1, 2, 5],
         	[1, 2, 6]],
         	[[3, 4, 2],
          	[3, 4, 3]]])#torch.Size([2, 2, 3])
+```
+
+**broadcast_tensors**
+
+```python
+Example::
+
+        >>> x = torch.arange(3).view(1, 3)
+        >>> y = torch.arange(2).view(2, 1)
+        >>> a, b = torch.broadcast_tensors(x, y)
+        >>> a.size()
+        torch.Size([2, 3])
+        >>> a
+        tensor([[0, 1, 2],
+                [0, 1, 2]])
+    """
 ```
 
 

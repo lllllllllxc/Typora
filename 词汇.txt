@@ -1,3 +1,23 @@
+SEQUENCE LEVEL TRAINING WITH RECURRENT NEURAL NETWORKS
+seminal 有创意的
+In their seminal work 
+intractable 棘手的
+Unfortunately, for text generation it is generally intractable to compute an oracle of the optimal target word given the words predicted so far
+-----------------------------------------------
+A Survey on Transformers in Reinforcement Learning
+unraveled解开
+the evolution of Transformers in RL has not yet been well unraveled
+taxonomy 分类学
+unleashing 解放
+we believe the field ofTransformRL will play an important role in unleashing the potential impact of reinforcement learning
+w.r.t. 关于 with reference to 
+Tang and Ha  leverage the attention mechanism of Transformers to process sensory sequence and construct a policy that is permutation invariant w.r.t. inputs
+tempting 吸引人的
+To this end 出于这一目的
+To this end, we explore how RL can be tackled with the tools of sequence
+modeling, using a Transformer architecture to model distributions over trajectories
+and repurposing beam search as a planning algorithm
+----------------------------
 LCCC
 facilitate 促进
 All the pre-trained models and the datasets are released to facilitate future research.
