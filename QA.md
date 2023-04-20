@@ -176,4 +176,185 @@ print(b)
 
    因此，SVM和深度学习各有优缺点，应根据具体的应用场景选择适合的模型。
 
-6. 
+6. Q：Transformer中的全连接层为什么说是Position-wiseA： Transformer中的全连接层被称为Position-wise Feedforward Networks，因为这一层的每个神经元都只和输入张量中的同一位置的神经元相连。这意味着，该层对每个位置的特征进行独立的处理，而不考虑其他位置的信息。因此，该层被称为“Position-wise”，因为它在处理每个位置的特征时，只考虑该位置本身的信息，而不考虑其他位置的信息。 
+
+   Q： 如何实现的position-wise 
+
+   A： 在Transformer中，Position-wise全连接层的实现非常简单，它只是一个两层的前馈神经网络。具体来说，它由一个线性变换和一个非线性激活函数组成，其中线性变换对每个位置的特征进行独立的处理。这个线性变换的权重矩阵是共享的，因此可以在所有位置上共享，这使得Position-wise全连接层的计算效率非常高。最后，通过一个ReLU激活函数来引入非线性，以增强模型的表达能力。这种Position-wise的设计使得Transformer能够对每个位置的特征进行独立的处理，从而更好地捕捉序列中不同位置之间的依赖关系。 
+
+   Q：具体说下常规的全连接层和position-wise前馈神经网络的区别
+
+   A：常规的全连接层和Position-wise前馈神经网络的主要区别在于它们的输入和输出。在常规的全连接层中，每个神经元都与输入张量中的所有神经元相连，因此该层的输出是输入张量的全局信息的函数。而在Position-wise前馈神经网络中，每个神经元只与输入张量中的同一位置的神经元相连，因此该层的输出只是输入张量在每个位置上的局部信息的函数。这种设计使得Position-wise前馈神经网络能够更好地处理序列数据，因为它能够对每个位置的特征进行独立的处理，从而更好地捕捉序列中不同位置之间的依赖关系。此外，由于Position-wise前馈神经网络在每个位置上都使用相同的权重矩阵，因此它的计算效率也更高。
+
+   A：在代码上，常规的全连接层和Position-wise前馈神经网络的区别在于它们的输入张量的维度和权重矩阵的形状。常规的全连接层的输入张量是一个二维矩阵，其中第一维表示样本数量，第二维表示每个样本的特征向量。而Position-wise前馈神经网络的输入张量是一个三维张量，其中第一维表示样本数量，第二维表示序列长度，第三维表示每个位置的特征向量。此外，Position-wise前馈神经网络的权重矩阵是一个二维矩阵，其中第一维的大小等于每个位置的特征向量大小，第二维的大小等于输出特征向量大小。在代码实现中，我们可以使用PyTorch或TensorFlow等深度学习框架提供的API来实现这两种网络。
+
+   Q： 给出pytorch实现中代码具体区别 
+
+   A：下面是一个用PyTorch实现常规的全连接层和Position-wise前馈神经网络的示例代码，以便更好地理解它们之间的区别：
+
+   ```python
+   import torch
+   import torch.nn as nn
+   
+   # 常规的全连接层
+   fc_layer = nn.Linear(in_features=100, out_features=50)
+   
+   # Position-wise前馈神经网络
+   class PositionwiseFeedforward(nn.Module):
+       def __init__(self, d_model, d_ff):
+           super(PositionwiseFeedforward, self).__init__()
+           self.linear1 = nn.Linear(d_model, d_ff)
+           self.linear2 = nn.Linear(d_ff, d_model)
+           self.relu = nn.ReLU()
+   
+       def forward(self, x):
+           x = self.linear1(x)
+           x = self.relu(x)
+           x = self.linear2(x)
+           return x
+   pwffn_layer = PositionwiseFeedforward(d_model=100, d_ff=50)
+   ```
+
+   
+
+   在这个示例代码中，我们首先定义了一个常规的全连接层fc_layer，它只包含一个线性变换。然后，我们定义了一个Position-wise前馈神经网络pwffn_layer，它包含两个线性变换和一个ReLU激活函数。这里的输入张量x是一个三维张量，其中第一维表示样本数量，第二维表示序列长度，第三维表示每个位置的特征向量。在forward函数中，我们首先使用第一个线性变换self.linear1对输入张量进行变换，然后使用ReLU激活函数进行非线性变换，最后再使用第二个线性变换self.linear2对张量进行最终的变换，得到Position-wise前馈神经网络的输出。
+
+7. Q：sentence_bleu中的smoothing_function有什么作用？
+   A：在计算BLEU分数时，如果使用的是smoothing_function，它将有助于减少罕见单词对整体BLEU分数的负面影响。这是因为smoothing_function通过在分母中添加一个常数来平滑n-gram计数。这种平滑技术有助于确保即使在参考翻译中没有出现的n-gram也能获得一些分数。
+   Q：对于序列1：a,b,c,d 序列2：d,c,b,a计算belu
+
+   A：假设n-gram的n取值范围是1到4，使用标准的BLEU计算方法，可以得到以下结果：
+
+   - 对于序列1：a,b,c,d
+     - unigram精度 = 1/4
+     - bigram精度 = 1/3
+     - trigram精度 = 1/2
+     - fourgram精度 = 0
+   - 对于序列2：d,c,b,a
+     - unigram精度 = 1/4
+     - bigram精度 = 1/3
+     - trigram精度 = 1/2
+     - fourgram精度 = 0
+
+   因此，标准BLEU分数为0。
+
+   如果使用smoothing_function，例如加法平滑，可以得到以下结果：
+
+   - 对于序列1：a,b,c,d
+     - unigram精度 = (1+1)/(4+4) = 0.25
+     - bigram精度 = (1+1)/(3+4) = 0.25
+     - trigram精度 = (1+1)/(2+4) = 0.33
+     - fourgram精度 = (0+1)/(1+4) = 0.2
+   - 对于序列2：d,c,b,a
+     - unigram精度 = (1+1)/(4+4) = 0.25
+     - bigram精度 = (1+1)/(3+4) = 0.25
+     - trigram精度 = (1+1)/(2+4) = 0.33
+     - fourgram精度 = (0+1)/(1+4) = 0.2
+
+   因此，使用加法平滑的BLEU分数为0.25。
+   Q： bleu = sentence_bleu([imp_sx], denoise_action, smoothing_function=SmoothingFunction().method1) 初始化为以上形式时，将会计算几gram 
+   A：使用上述代码初始化的`sentence_bleu`函数将计算1到4元语法（n-gram）的BLEU分数。这是因为默认情况下，`SmoothingFunction().method1`使用1到4元语法的加法平滑。如果需要计算其他n-gram，可以通过指定`weights`参数来指定要使用的n-gram权重。例如，如果要计算仅使用1元语法和2元语法的BLEU分数，可以将`weights`参数设置为`(0.5, 0.5, 0, 0)`。
+   Q：最终返回结果与调用的1-4gram计算结果有什么关系
+   A：`sentence_bleu`函数返回的最终BLEU分数是基于计算出的1-4gram精度和短语匹配率计算得出的。具体来说，对于n-gram精度，`sentence_bleu`函数计算n-gram的精度得分，然后将其加权平均，其中权重由`weights`参数指定。例如，如果`weights`参数设置为`(0.25, 0.25, 0.25, 0.25)`，则会计算1-4gram的精度得分，并将它们的平均值作为BLEU分数。对于短语匹配率，`sentence_bleu`函数计算候选翻译中与参考翻译匹配的短语数量，并将其除以候选翻译中的总短语数。最终的BLEU分数是n-gram精度和短语匹配率的几何平均值。因此，1-4gram计算结果对最终返回结果有很大的影响。
+
+8. Q：只使用`nn.TransformerEncoder`是否能实现生成任务
+   A：`nn.TransformerEncoder`是一个用于自然语言处理的神经网络模型，它可以用于文本分类、机器翻译、问答系统等任务。然而，它本身并不足以实现生成任务，因为生成任务需要在模型内部保持状态并生成一个序列，而`nn.TransformerEncoder`只是将输入序列编码为一个固定长度的向量表示。要实现生成任务，需要将`nn.TransformerEncoder`与其他模型结合使用，例如`nn.TransformerDecoder`或者递归神经网络（`RNN`）。
+
+   Q：We adopt the multi-layer Transformer (Radford et al., 2018) decoder as the recurrent model, which applies a multi-headed self-attention operation over the historical symptom-attribute sequence followed by position-wise feedforward layers to produce an output distribution over target symptoms.这句话中decoder的实现其实是使用的`nn.TransformerEncoder`，这样合理吗？
+
+   A：根据句子中的描述，应该是使用了multi-layer Transformer decoder，而不是`nn.TransformerEncoder`。因为decoder的任务是将历史症状-属性序列映射到目标症状，这需要一个生成模型，而`nn.TransformerEncoder`只能编码输入序列，无法进行生成。因此，使用multi-layer Transformer decoder来实现生成任务是合理的。
+
+   Q：
+
+   ```python
+   def forward(self, sx_ids, attr_ids, mask=None, src_key_padding_mask=None):
+           if not sx_one_hot and not attr_one_hot:
+               inputs = self.sx_embedding(sx_ids) + self.attr_embedding(attr_ids)# sx_embedding返回的维度
+           else:
+               inputs = torch.cat([self.sx_embedding(sx_ids), self.attr_embedding(attr_ids)], dim=-1)
+           if dec_add_pos:
+               inputs = self.pos_embedding(inputs)
+           outputs = self.decoder(inputs, mask, src_key_padding_mask)# src_key_padding_mask传递给了encoder_layer forward中的self_attn，描述了哪些位置是padding
+           return outputs
+   #以上是推理阶段其forward代码，下面是其中self.decoder的代码
+   self.decoder = nn.TransformerEncoder(
+               encoder_layer=nn.TransformerEncoderLayer(
+                   d_model=emb_dim,
+                   nhead=dec_num_heads,
+                   dim_feedforward=dec_dim_feedforward,
+                   dropout=dec_dropout,
+                   activation='relu'),
+               num_layers=dec_num_layers)
+   ```
+
+   A：根据给出的代码，`self.decoder`是一个`nn.TransformerEncoder`，而不是`nn.TransformerDecoder`。这里使用的是Encoder而不是Decoder，因为在给定历史症状-属性序列的情况下，需要将其编码为一个固定长度的向量表示，然后用于生成目标症状。而Decoder则是用于生成序列的模型，通常需要在内部保持状态并逐步生成每个单词。因此，在这个任务中使用Encoder是合理的。
+
+   Q： 下面是decoder网络具体的初始化内容： 
+
+   ```python
+   def __init__(self, sx_embedding, attr_embedding, pos_embedding, num_sxs: int, emb_dim: int):
+           super().__init__()
+   
+           self.num_sxs = num_sxs
+   
+           self.sx_embedding = sx_embedding
+           self.attr_embedding = attr_embedding
+           self.pos_embedding = pos_embedding
+   
+           self.decoder = nn.TransformerEncoder(
+               encoder_layer=nn.TransformerEncoderLayer(
+                   d_model=emb_dim,
+                   nhead=dec_num_heads,
+                   dim_feedforward=dec_dim_feedforward,
+                   dropout=dec_dropout,
+                   activation='relu'),
+               num_layers=dec_num_layers)
+   
+           self.sx_fc = nn.Linear(emb_dim, num_sxs)
+   ```
+
+   A：根据给出的代码，这是一个基于`nn.TransformerEncoder`的生成模型。模型的输入包括历史症状序列和属性序列，它们被分别嵌入为向量表示，并进行拼接。然后，这个向量序列被送入一个`nn.TransformerEncoder`中，使用多个encoder_layer进行编码。最终的输出是一个固定长度的向量表示，它被送入一个全连接层（`nn.Linear`）中，用于预测目标症状。因此，这个模型是一个基于Transformer的生成模型，用于将历史症状-属性序列映射到目标症状。
+
+   Q：该架构是否是Encoder-Linear的一个生成式架构
+
+   A：是的，这个架构可以看作是一个Encoder-Linear的生成式架构。Encoder部分使用了`nn.TransformerEncoder`对历史症状-属性序列进行编码，然后将编码后的向量作为输入送入全连接层（`nn.Linear`）中，用于预测目标症状。由于只使用了一个全连接层，因此可以将这个模型看作是一个线性生成模型。
+
+9. 
+
+10. 
+
+11. 
+
+12. 
+
+13. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

@@ -1,3 +1,7 @@
+ChatDoctor
+been tailored to
+However, such language models have not been tailored to the medical domain, resulting in poor answer accuracy and inability to give plausible recommendations for medical diagnosis, medications, etc.
+---------------
 SEQUENCE LEVEL TRAINING WITH RECURRENT NEURAL NETWORKS
 seminal 有创意的
 In their seminal work 

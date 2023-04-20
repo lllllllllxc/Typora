@@ -579,7 +579,7 @@ $$
 
  填槽目的是为了让用户意图转化为用户明确的指令而补全信息的过程 
 
- NLU（Natural Language Understanding）自然语言理解希望机器像人一样，具备正常人的语言理解能力即需要知道人的意图。 
+ NLU/SLU（Natural Language Understanding/Spoken Language Understanding）自然语言理解希望机器像人一样，具备正常人的语言理解能力即需要知道人的意图。 
 
  而槽填充的目的和NLU是一致的，它为机器提供一个规范的语义表示 ，例子：
 
