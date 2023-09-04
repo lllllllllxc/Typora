@@ -56,4 +56,74 @@ y ' <sub>iS</sub>是平滑的标签
 
 ![image-20230904150528522](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904150528522.png)
 
-ϵ为平滑参数，值设为0.1.
+ϵ为平滑参数，值设为0.1。
+
+在没有目标标签或源数据的情况下，以自监督的方式提取有效的**总体时间特征**，这些特征具有判别性并符合跨时间假设;另一方面，通过关注**局部时间特征**来对齐源数据分布，对其与源数据分布的相关性具有更高的置信度。
+
+![image-20230904180713602](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904180713602.png)
+
+目标时空特征提取器G<sub>T、sp</sub> G<sub>T、t</sub>采用与G<sub>S、sp</sub> G<sub>S、t</sub>、G<sub>T、sp</sub>、G<sub>T</sub>相同的网络架构，G<sub>T,sp</sub>和G<sub>T,t</sub>分别由G<sub>S、sp</sub>、G<sub>S、t</sub>进行初始化。整体时间特征是通过学习局部时间特征的时间一致性以及直接在局部时间特征上应用源分类器H<sub>S</sub>产生的各自的局部源预测来获得的。同时，为了对目标局部时间特征进行集中聚合，进一步设计了局部权重模块(LWM)。
+
+如果局部时间特征一致，则lt(r1) T与lt(r2) T之间的互相关矩阵应该接近单位矩阵。互相关矩阵表示为:
+
+![image-20230904182208710](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904182208710.png)
+
+式中，ˆlt 为归一化局部时间特征，计算为:
+
+![image-20230904182817237](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904182817237.png)
+
+ε为数值稳定性的小偏置值。
+
+互相关矩阵C<sup> r1r2</sup>是一个大小为d × d的方阵，其中d为局部时间特征的维数。由于理想情况下C<sup> r1r2</sup>应该接近单位矩阵，特征一致性损失应该最大化各自局部时间特征的相似性，同时减少组件之间的冗余。
+
+因此，对于C<sub> r1r2</sub>的特征一致性损失表示为：
+
+![image-20230904183737640](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904183737640.png)
+
+其中i, j∈[0,d−1]为局部时间特征维数的指标，λ为权衡常数。
+
+最终的特征一致性损失计算为所有相互关联矩阵的平均特征一致性损失，每个矩阵对应于一对局部时间特征。最终的特征一致性损失表示为：
+
+![image-20230904184108117](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904184108117.png)
+
+其中N<sub>fc</sub> =P<sup>k−1</sup><sub>2</sub>为局部时间特征对的总数。
+
+此外，由于同一输入视频的局部时间特征应该通过最小化L<sub>fc</sub>来保持一致，因此它们与源数据分布的相关性也应该保持一致。由于源分类器包含源数据分布，因此这种相关性可以通过源分类器对局部时间特征的预测来近似。换句话说，目标局部时间特征对源数据分布相关性的一致性相当于目标局部时间特征对源预测的一致性。同时，对各自的局部时间特征进行聚合，得到目标整体时间特征。它应该包含与局部时间特征相似的运动信息。因此，源预测的一致性预测可以扩展到整体时间特征。
+
+局部源预测：
+
+![image-20230904185630315](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904185630315.png)
+
+平均局部源预测
+
+![image-20230904185650244](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904185650244.png)
+
+**为了实现源预测的一致性**，我们的目标是最小化每个局部源预测与平均局部源预测之间的差异:
+
+![image-20230904185736666](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904185736666.png)
+
+KL(p∥q) 代表Kullback–Leibler (KL) 差异。
+
+通过将H<sub>S</sub>应用于目标总体时间特征t<sub>T</sub>来计算总体目标预测p<sub>t,T</sub>，这是一个简单的平均聚合，应用于局部时间特征lt<sup>(2)</sup><sub>T</sub>，…， lt<sup>(k)</sup><sub> T</sub>。为了将p<sub>t,T</sub>纳入源预测一致性，我们的目标是最小化p<sub>t,T</sub>与¯p<sub>lt,T</sub>之间的绝对差值，定义为:
+
+![image-20230904194800625](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904194800625.png)
+
+最终的源预测一致性是通过联合最小化每个局部源预测与平均局部源预测之间的预测偏差，以及整体目标预测与平均局部源预测之间的预测偏差来实现的，表示为:
+
+![image-20230904194903006](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904194903006.png)
+
+其中α局部和α整体是权衡常数。因此，通过对源预测一致性损失和特征一致性损失进行联合优化来实现学习时间一致性，表示为:
+
+![image-20230904194951486](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904194951486.png)
+
+其中βf c和βpc为权衡超参数。
+
+**Local Weight Module (LWM).**
+
+p<sup>(r)</sup><sub>lt,T</sub>的置信度如下：
+
+![image-20230904195832711](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904195832711.png)
+
+最后通过加入残差连接得到局部时间特征lt(r) T所对应的局部相关权值，以实现更稳定的优化，表示为:
+
+![image-20230904200029207](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904200029207.png)
