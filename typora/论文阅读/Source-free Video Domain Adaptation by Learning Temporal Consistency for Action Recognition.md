@@ -24,3 +24,36 @@
 
 制定了具有挑战性但现实的无源视频域适应(SFVDA)问题，该问题解决了视频中的数据隐私问题。我们提出了一种新的ATCoN来有效地解决SFVDA。最后证明了优越性
 
+#### 相关工作
+
+尽管图像的SFDA研究取得了进展，但SFVDA尚未得到解决。
+
+#### 本方法
+
+在无源视频域自适应(SFVDA)场景中，我们只得到一个由空间特征提取器G<sub>S、sp</sub>、时间特征提取器G<sub>S,t</sub>和分类器H<sub>S</sub>，以及一个未标记的目标域D<sub>T</sub> = {V<sub>iT</sub>} <sup>nT</sup> <sub>i=1</sub>，具有n<sub>T</sub>以p<sub>T</sub>的概率分布为特征的 i.i.d视频。源模型通过训练其参数θ<sub>S</sub>、s<sub>p</sub>、θ<sub>S</sub>、t、θ<sub>H</sub>生成，标记的源域D<sub>S</sub> = {(V<sub>iS</sub>, y<sub>iS</sub>)} <sup>nS</sup><sub> i=1</sub>，包含n<sub>S</sub>个视频。我们假设标记的源域视频和未标记的目标域视频共享相同的C类，但在将源模型调整为D<sub>T</sub>时，D<sub>S</sub>是不可访问的。
+
+![image-20230904144416189](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904144416189.png)
+
+(V <sup>(r)</sup> <sub>iS</sub>)<sub>m</sub> = {f<sup> (a)</sup><sub> iS</sub>, f<sup>(b)</sup> <sub>iS</sub>，…}<sub>m</sub>是具有r个时序帧的第m个clip。a和b是帧序号。 积分函数g<sup>(r)</sup><SUB>S</sub>
+
+最终的整体时间特征t<sub>iS</sub>是应用于所有局部时间特征的简单平均聚合,
+
+![image-20230904145507918](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904145507918.png)
+
+通过在t<sub>iS</sub>上应用源分类器H<sub>S</sub>进一步计算源预测。源模型以标准交叉熵损失作为目标函数进行训练，其公式为:
+
+![image-20230904145913379](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904145913379.png)
+
+其中σ是softmax函数，其C -th元素定义为σ<sub>c</sub>(x) =
+
+![image-20230904150155996](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904150155996.png)
+
+为了使源模型更具判别性和可转移性，从而更好地对目标数据进行对齐，我们进一步采用了标签平滑技术[35]，使提取的特征分布在均匀分离的紧密聚类中。进一步表示为：
+
+![image-20230904150410003](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904150410003.png)
+
+y ' <sub>iS</sub>是平滑的标签
+
+![image-20230904150528522](C:\Users\lxc\AppData\Roaming\Typora\typora-user-images\image-20230904150528522.png)
+
+ϵ为平滑参数，值设为0.1.
