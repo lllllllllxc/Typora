@@ -40,6 +40,10 @@ https://download.pytorch.org/whl/torch_stable.html
 
 https://download.pytorch.org/whl/torch_stable.html
 
+或者这样下载，不需要分开下载。
+
+[Previous PyTorch Versions | PyTorch](https://pytorch.org/get-started/previous-versions/)
+
 查看torch
 
 [如何查看电脑安装的pytorch版本？？？（windows和ubuntu系统通用）_怎样在ubuntu系统查看安装的pytorch版本_布丁小芒果的博客-CSDN博客](https://blog.csdn.net/weixin_43382156/article/details/103565151)
