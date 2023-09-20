@@ -57,7 +57,7 @@ int main(void)
 1. 先写基本框架
 
 ```
-#include <studio.h>
+#include <stdio.h>
 
 int main(void)
 {
@@ -66,3 +66,79 @@ int main(void)
 }
 ```
 
+2.再写思路框架，定义变量。
+
+```
+#include <stdio.h>
+
+int main(void)
+{
+	//保存三个系数
+	int a = 1;
+	int b = 2;
+	int c = 3;
+    float delta;//b*b-4ac
+    float x1,x2;//两个解
+	delta = b*b-4ac;
+
+	if(delta > 0)
+	{
+	   两个解
+	}else if(delta == 0)
+	{
+	   唯一解   
+	}
+	else
+	{
+	   无解
+	}
+
+
+    return 0;
+}
+```
+
+3.补充内容，补足引用。
+
+```
+#include <stdio.h>
+#include <math.h>
+int main(void)
+{
+	//保存三个系数
+	int a = 1;
+	int b = 2;
+	int c = 3;
+    double delta;//b*b-4ac
+    double x1;
+	double x2;//两个解
+	delta = b*b-4*a*c;
+
+	if(delta > 0)
+	{
+	   x1 = (-b+sqrt(delta))/(2*a);
+	   x2 = (-b-sqrt(delta))/(2*a);
+	   printf("该一元二次方程有两个解,x1=%f,x2=%f\n",x1,x2);
+
+	}else if(delta == 0)
+	{
+	   x1 = -b/(2*a); 
+	   printf("该方程只有唯一解x1=x2=%f\n",x1);
+	}
+	else
+	{
+	   printf("无解\n");
+	}
+
+
+    return 0;
+}
+```
+
+#### VC++ 6.0使用详解
+
+1.保存：CTRL+S
+
+2.代码规范，记得注释和空格。
+
+3.关闭程序，要使用关闭工作空间，否则影响第二个程序运行。
