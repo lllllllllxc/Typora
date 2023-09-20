@@ -24,5 +24,66 @@
 
 #### 本方法
 
+##### 问题定义
+
+我们在表1中列出了在线连续测试时间适应设置与现有适应设置之间的主要区别。 
+
+![image-20230920150552389](C:\Users\35106\AppData\Roaming\Typora\typora-user-images\image-20230920150552389.png)
+
+在源数据(X<SUP>S</sup>, Y<sup> S</sup>)**上训练参数为**θ的已有预训练模型f<sub>θ<sub>0</sub></sub>(x)，
+
+未标记的目标域数据X<sup>T</sup>按顺序提供，模型只能访问当前时间步长的数据。在时间步长t处，提供目标数据X<SUP>T</SUP><sub>t</sub>作为输入，模型f<sub>θ<sub>t</sub></sub>需要做出预测f<sub>θ<sub>t</sub></sub>(X<SUP>T</SUP><sub>t</sub>)，根据未来输入θ<sub>t</sub>−→θ<sub>t+1</sub>进行自我调整。X<SUP>T</SUP><sub>t</sub>的数据分布是不断变化的。基于在线预测对模型进行评估。
+
+##### 方法论
+
+![image-20230920155729032](C:\Users\35106\AppData\Roaming\Typora\typora-user-images\image-20230920155729032.png)
+
 ![image-20230920143917649](C:\Users\35106\AppData\Roaming\Typora\typora-user-images\image-20230920143917649.png)
 
+**源模型**：这需要对源数据进行重新训练，并且不可能重用现有的预训练模型。在我们提出的测试时间适应方法中，我们解除了这个负担，并且不需要修改体系结构或额外的源培训过程。因此，任何现有的预训练模型都可以使用，而无需对源进行再训练。
+
+**权重平均伪标签**：给定目标数据X<SUP>T</SUP><sub>t</sub>和模型f<sub>θ<sub>t</sub></sub>，自训练框架下常见的测试时间目标是最小化预测y^<sup>T</sup><sub>t</sub> = f<sub>θ<sub>t</sub></sub> (X<SUP>T</SUP><sub>t</sub>)与伪标签之间的交叉熵一致性。
+
+我们使用加权平均教师模型f<sub>θ'</sub>来生成伪标签。在时间步长t = 0时，将教师网络初始化为与源预训练网络相同。在时间步长t处，伪标签首先由教师生成y<sup>ˆ′</sup><sup>T</sup><sub>t</sub> =f<sub>θ'</sub>(X<SUP>T</SUP><sub>t</sub>)
+
+学生f<sub>θ<sub>t</sub></sub>通过学生和教师预测之间的交叉熵损失来更新:
+
+![image-20230920153625648](C:\Users\35106\AppData\Roaming\Typora\typora-user-images\image-20230920153625648.png)
+
+其中，y<sup>ˆ′</sup><sup>T</sup><sub>tc</sub>为教师模型软伪标签预测中c类出现的概率，y<sup>ˆ</sup><sup>T</sup><sub>tc</sub>为主模型(学生)的预测。这种损失加强了教师和学生预测之间的一致性。
+
+在使用公式1更新学生模型θ<sub>t</sub>−→θ<sub>t+1</sub>后，我们使用学生权重通过指数移动平均更新教师模型的权重:
+
+![image-20230920153956127](C:\Users\35106\AppData\Roaming\Typora\typora-user-images\image-20230920153956127.png)
+
+其中α是平滑因子。我们对输入数据X<SUP>T</SUP><sub>t</sub>的最终预测是y<sup>ˆ′</sup><sup>T</sup><sub>t</sub>中概率最高的类别。
+
+**增广平均伪标签**：在不断变化的环境下，测试分布可能发生巨大变化，这可能使增强策略无效。在这里，我们考虑了测试时间的域移，并通过预测置信度近似域差。仅在域差较大时进行增广，以减少误差累积。
+
+![image-20230920154543272](C:\Users\35106\AppData\Roaming\Typora\typora-user-images\image-20230920154543272.png)
+
+其中，y<sup>˜′T</sup><sub>t</sub>是来自教师模型的增强平均预测，y<sup>ˆ′</sup><sup>T</sup><sub>t</sub>是来自教师模型的直接预测，conf(f<sub>θ<sub>0</sub></sub>(X<SUP>T</SUP><sub>t</sub>))是源预训练模型对当前输入X<SUP>T</SUP><sub>t</sub>的预测置信度，p<sub>th</sub>是置信度阈值。通过使用公式4中的预训练模型f<sub>θ<sub>0</sub></sub>计算当前输入X<SUP>T</SUP><sub>t</sub>上的预测置信度，我们试图近似源和当前域之间的域差。
+
+我们假设较低的置信度表示较大的领域差距，较高的置信度表示较小的领域差距。因此，当置信度较高且大于阈值时，我们直接使用y<sup>ˆ′</sup><sup>T</sup><sub>t</sub>作为伪标签，不使用任何增值。当置信度较低时，我们额外应用N个随机增广来进一步提高伪标签质量。
+
+在具有小域间隙的自信样本上随机扩增，有时会降低模型的性能。所以过滤至关重要。
+
+通过改进的伪标签更新学生:
+
+![image-20230920155638107](C:\Users\35106\AppData\Roaming\Typora\typora-user-images\image-20230920155638107.png)
+
+**随机修复**：长期自我训练的持续适应不可避免地会引入错误并导致遗忘。强烈的分布移位会导致校准错误甚至错误的预测。在这种情况下，自我训练可能只会强化错误的预测。即使新数据没有严重偏移，模型也可能因为不断的适应而无法恢复。
+
+考虑在时间步长为t时，基于方程1的梯度更新后的学生模型f<sub>θ</sub>内的卷积层:
+
+![image-20230920160147360](C:\Users\35106\AppData\Roaming\Typora\typora-user-images\image-20230920160147360.png)
+
+其中*表示卷积运算，x<sub>l</sub>和x<sub>l+1</sub>表示该层的输入和输出，W<sub>t+1</sub>表示可训练的卷积滤波器。
+
+本文提出的随机恢复方法通过以下方式对权值W进行更新:
+
+![image-20230920160533254](C:\Users\35106\AppData\Roaming\Typora\typora-user-images\image-20230920160533254.png)
+
+其中⊙表示逐元素的乘法。p是一个小的恢复概率，M是与W<sub>t+1</sub>形状相同的掩模张量。掩码张量决定W<sub>t+1</sub>中的哪个元素要恢复到源权重W<sub>0</sub>。
+
+通过随机地将可训练权值中的少量张量元素恢复到初始权值，避免了网络偏离初始源模型太远，从而避免了灾难性遗忘。此外，通过保留源模型的信息，我们能够训练所有可训练的参数，而不会遭受模型崩溃的痛苦
