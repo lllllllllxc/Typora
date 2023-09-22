@@ -96,58 +96,6 @@ cd 存储路径
 pip install -r requirements.txt
 ```
 
-### 封装安装yml
-
-要使用 `conda env create -f environment.yml` 方式创建虚拟环境，需要创建一个包含依赖包及其版本信息的 YAML 文件。下面是创建 `environment.yml` 文件的一般步骤：
-
-1. 打开文本编辑器（如 Notepad++、Sublime Text 或 Visual Studio Code）。
-
-2. 在文件中添加以下内容来设置新的虚拟环境的名称，例如 `myenv`：
-
-   ```
-   name: myenv
-   ```
-
-   
-
-3. 添加一个 `dependencies` 字段，用于指定项目所需的依赖包及其版本。你可以使用 `pip` 或 `conda` 注明依赖包来源。
-
-   - 对于 `pip`，示例格式如下：
-
-     ```
-     pip:
-       - python=3.9
-       - numpy>=1.18
-       - pandas
-       - scikit-learn
-     ```
-
-     
-
-   - 对于 `conda`，示例格式如下：
-
-     ```
-     dependencies:
-       - python=3.9
-       - numpy=1.18
-       - pandas
-       - scikit-learn
-     ```
-
-     
-
-4. 如果需要添加其他配置，例如指定使用的 channels（软件源），可以在 YAML 文件中的 `channels` 字段中指定。示例：
-
-   ```
-   channels:
-     - conda-forge
-     - defaults
-   ```
-
-   
-
-5. 保存文件为 `environment.yml`。
-
 ### 虚拟环境与 Jupyter 内核相连
 
 请在 Prompt 的虚拟环境下操作下列命令
