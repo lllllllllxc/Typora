@@ -1,5 +1,7 @@
 ### Continual Test-Time Domain Adaptation
 
+https://qin.ee/cotta.
+
 #### 摘要
 
 ![image-20230920121632997](C:\Users\35106\AppData\Roaming\Typora\typora-user-images\image-20230920121632997.png)
@@ -115,4 +117,64 @@
 对于**CIFAR10到cifar10c**，我们遵循TENT[61]对CIFAR10实验的官方公开实现。采用了相同的预训练模型，即来自**RobustBench基准测试[8]的WideResNet-28[71]模型**。我们在每次迭代中为一个步骤更新模型(即每个测试点一个梯度步骤)。我们使用与官方实现相同的**学习率为1e-3**的Adam优化器。在[5]之后，我们使用了相同的随机增强组合，包括颜色抖动、随机仿射、高斯模糊、随机水平翻转和高斯噪声。我们在实验中使用**32个增广**。我们在补充材料中讨论了增广阈值的选择。与TENT模型只更新BN尺度和转移权重不同，我们在实验中更新了所有可训练的参数。我们对所有实验使用**p = 0.01的恢复概率**。
 
 对于**CIFAR100到cifar100c**的实验，我们采用了**来自[16]的预训练的ResNeXt-29[65]模型**，该模型在RobustBench基准测试中被用作CIFAR100的默认架构之一[8]。**使用与CIFAR10实验相同的超参数**。ImageNet-toImageNet-C[15]实验使用了RobustBench[8]中标准的预训练resnet50模型。在十种不同的损坏顺序下对ImageNet-C实验进行了评估。
+
+1.配置环境
+
+environment.yml里面的括号后面的编号删除。
+
+**`RobustBench`**手动安装。
+
+segment也得下载和配置环境（# Example logs are included in ./example_logs/base.log, tent.log, and cotta.log.）。
+
+模型动物园：
+
+由于 ImageNet 数据集的许可，应手动下载：
+
+- ImageNet：[在此处](https://image-net.org/download.php)获取下载链接（只需从学术电子邮件注册，那里的审批系统是自动的，并且立即发生），然后按照 [此处](https://github.com/soumith/imagenet-multiGPU.torch#data-processing)提取验证的说明 以与 PyTorch 兼容的格式设置为文件夹 。`val`
+- ImageNet-C：请访问[此处](https://github.com/hendrycks/robustness#imagenet-c)获取说明。
+- ImageNet-3DCC：使用提供的工具从[此处](https://github.com/EPFL-VILAB/3DCommonCorruptions#3dcc-data)下载数据。数据将保存到名为 的文件夹中。`ImageNet-3DCC`
+
+要使用模型库中的模型，您可以在下表中找到所有可用的模型 ID。
+
+download.sh：下载并解压
+
+2.内容
+
+**目的**：
+
+- [CoTTA](https://arxiv.org/abs/2203.13591)
+- AdaBN / BN Adapt
+- TENT
+
+在
+
+- CIFAR10/100 -> CIFAR10C/100C (standard/gradual)
+- ImageNet -> ImageNetC
+- Cityscapes -> ACDC (segmentation)
+
+上面比较
+
+**代码**
+
+robustbench：标准化的对抗性稳健性基准，对标auto Attack，使用攻击来检测。
+
+data
+
+jpeg格式的图片和对应的标签
+
+leader board
+
+输出的结果是一个包含排行榜信息的 HTML 表格的字符串。
+
+model zoo
+
+调用模型，直接从命令行从模型库重现模型评估。
+
+**文件类型**
+
+运行.sh：配置环境、调用
+
+.yaml:超参
+
+.py:结构体和函数
 
