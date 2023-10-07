@@ -42,7 +42,7 @@ https://qin.ee/cotta.
 
 ![image-20230920143917649](C:\Users\35106\AppData\Roaming\Typora\typora-user-images\image-20230920143917649.png)
 
-![IMG_20230921_084203](D:\gitbash\Typora\typora\图片\IMG_20230921_084203.jpg)
+![IMG_20230921_084203](D:\githubre\Typora\typora\图片\IMG_20230921_084203.jpg)
 
 **源模型**：这需要对源数据进行重新训练，并且不可能重用现有的预训练模型。在我们提出的测试时间适应方法中，我们解除了这个负担，并且不需要修改体系结构或额外的源培训过程。因此，任何现有的预训练模型都可以使用，而无需对源进行再训练。
 
@@ -88,13 +88,17 @@ https://qin.ee/cotta.
 
 ![image-20230920160533254](C:\Users\35106\AppData\Roaming\Typora\typora-user-images\image-20230920160533254.png)
 
-其中⊙表示逐元素的乘法。p是一个小的恢复概率，M是与W<sub>t+1</sub>形状相同的掩模张量，Bernoulli表示伯努利分布。掩码张量决定W<sub>t+1</sub>中的哪个元素要恢复到源权重W<sub>0</sub>。如果M中对应位置的值是1，那么Wt+1中的对应元素将从源权重W0中恢复；如果M中对应位置的值是0，那么Wt+1中的对应元素将保持不变。
+其中⊙表示逐元素的乘法。p是一个小的恢复概率，M是与W<sub>t+1</sub>形状相同的掩模张量，Bernoulli表示伯努利分布。掩码张量决定W<sub>t+1</sub>中的哪个元素要恢复到源权重W<sub>0</sub>。如果M中对应位置的值是1，那么W<sub>t+1</sub>中的对应元素将从源权重W<sub>0</sub>中恢复；如果M中对应位置的值是0，那么W<sub>t+1</sub>中的对应元素将保持不变。
 
 通过随机地将可训练权值中的少量张量元素恢复到初始权值，避免了网络偏离初始源模型太远，从而避免了灾难性遗忘。此外，通过保留源模型的信息，我们能够训练所有可训练的参数，而不会遭受模型崩溃的痛苦。
 
+<<<<<<< Updated upstream
 
 
 数据集
+=======
+#### 实验
+>>>>>>> Stashed changes
 
 1.配置环境
 
@@ -112,6 +116,13 @@ download.sh：下载并解压
 
 2.内容
 
+<<<<<<< Updated upstream
+=======
+**目的**：
+
+夜间语义分割任务
+
+>>>>>>> Stashed changes
 上面比较
 
 **代码**
@@ -140,6 +151,10 @@ model zoo
 
 我的实验
 
-DA里，源域cityscapes，目标域Zurich，这个在.yaml文件中修改。
+DA里，源域cityscapes，目标域Zurich（属于cityscapes）
 
 预训练模型（骨干网络）：refinenet
+
+一般都是拿这5000张精细标注(gt fine)的样本集来进行训练和评估的。当然，还有一个策略就是，先对粗糙标注的样本集进行一个简单的训练，然后再基于精细标注的数据集进行final training。 这里我们只谈gt fine样本集的训练。
+
+[语义分割学习系列（三）cityscapes数据集介绍_cityscape19个类转为34个类-CSDN博客](https://blog.csdn.net/avideointerfaces/article/details/104139298?ops_request_misc=&request_id=&biz_id=102&utm_term=cityscapes数据集&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-2-104139298.nonecase&spm=1018.2226.3001.4187)
