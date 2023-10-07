@@ -92,31 +92,9 @@ https://qin.ee/cotta.
 
 通过随机地将可训练权值中的少量张量元素恢复到初始权值，避免了网络偏离初始源模型太远，从而避免了灾难性遗忘。此外，通过保留源模型的信息，我们能够训练所有可训练的参数，而不会遭受模型崩溃的痛苦。
 
-#### 实验
-
-我们在五个连续的测试时间适应基准任务上评估了我们提出的方法:cifar10到cifar10c(标准和渐进)，cifar100到cifar100c, imagenet到imagenet - c的图像分类，以及cityscapes到acdc的语义分割。
-
-我的实验相关
-
-**cityscape -to- acdc**是一个连续的语义分割任务，我们设计它来模拟现实世界中的连续分布变化。源模型是在cityscape数据集上训练的现成的预训练分割模型[7]。目标域包含来自不利条件数据集(ACDC)的各种场景的图像[50]。ACDC数据集与cityscape共享相同的语义类，并在四种不同的不利视觉条件下收集:雾、夜、雨和雪。我们按照相同的默认顺序评估连续的测试时间适应性。我们使用来自每个不利条件的400张未标记的图像进行适应。
-
-为了模拟现实生活中可能会重新访问的类似环境的场景，并评估我们的方法的遗忘效果，**我们将同一序列组(四种条件)重复10次(即总共40次:雾-→夜-→雨-→雪-→雾…)**。这也为长期适应性能的评估提供了依据。
-
-对于实现细节，我们在cityscape -to - acdc实验中采用了基于变压器的架构Segformer[64]。我们使用公开可用的预先训练过的Segformer-B5作为我们的现成资源模型。对于基线比较方法，TENT优化了归一化层中的参数。对于提出的CoTTA模型，所有可训练的层都被更新，而不需要选择特定的层。来自ACDC的图像分辨率为1920x1080。我们使用960x540的下采样分辨率作为网络的输入，并在原始分辨率下评估预测结果。Adam优化器的学习率比Segformer的默认学习率小8倍，因为我们在在线连续测试时间适应实验中使用批大小为1而不是8(源训练的默认值)。
-
-我们使用带有翻转的多尺度输入作为所提出方法的增强方法来生成增强加权伪标签(如公式3所示)。遵循MMSeg中cityscape的默认做法[6]，我们使用尺度因子[0.5,0.75,1.0,1.25,1.5,1.75,2.0]。
-
 
 
 数据集
-
-最初创建CIFAR10C、CIFAR100C和ImageNet-C是为了对分类网络的鲁棒性进行基准测试[15]。每个数据集包含15种严重程度为5级的损坏类型。对于CIFAR10C和CIFAR100C数据集，每种损坏类型都有10,000张图像。
-
-对于我们的在线连续测试时间自适应任务，使用在CIFAR10或CIFAR100数据集的干净训练集上预训练的网络。
-
-对于**CIFAR10到cifar10c**，我们遵循TENT[61]对CIFAR10实验的官方公开实现。采用了相同的预训练模型，即来自**RobustBench基准测试[8]的WideResNet-28[71]模型**。我们在每次迭代中为一个步骤更新模型(即每个测试点一个梯度步骤)。我们使用与官方实现相同的**学习率为1e-3**的Adam优化器。在[5]之后，我们使用了相同的随机增强组合，包括颜色抖动、随机仿射、高斯模糊、随机水平翻转和高斯噪声。我们在实验中使用**32个增广**。我们在补充材料中讨论了增广阈值的选择。与TENT模型只更新BN尺度和转移权重不同，我们在实验中更新了所有可训练的参数。我们对所有实验使用**p = 0.01的恢复概率**。
-
-对于**CIFAR100到cifar100c**的实验，我们采用了**来自[16]的预训练的ResNeXt-29[65]模型**，该模型在RobustBench基准测试中被用作CIFAR100的默认架构之一[8]。**使用与CIFAR10实验相同的超参数**。**ImageNet-toImageNet-C[15]实验**使用了RobustBench[8]中标准的预训练resnet50模型。在十种不同的损坏顺序下对ImageNet-C实验进行了评估。
 
 1.配置环境
 
@@ -128,29 +106,11 @@ segment也得下载和配置环境（# Example logs are included in ./example_lo
 
 模型动物园：
 
-由于 ImageNet 数据集的许可，应手动下载：
-
-- ImageNet：[在此处](https://image-net.org/download.php)获取下载链接（只需从学术电子邮件注册，那里的审批系统是自动的，并且立即发生），然后按照 [此处](https://github.com/soumith/imagenet-multiGPU.torch#data-processing)提取验证的说明 以与 PyTorch 兼容的格式设置为文件夹 。`val`
-- ImageNet-C：请访问[此处](https://github.com/hendrycks/robustness#imagenet-c)获取说明。
-- ImageNet-3DCC：使用提供的工具从[此处](https://github.com/EPFL-VILAB/3DCommonCorruptions#3dcc-data)下载数据。数据将保存到名为 的文件夹中。`ImageNet-3DCC`
-
 要使用模型库中的模型，您可以在下表中找到所有可用的模型 ID。
 
 download.sh：下载并解压
 
 2.内容
-
-**目的**：
-
-- [CoTTA](https://arxiv.org/abs/2203.13591)
-- AdaBN / BN Adapt
-- TENT
-
-在
-
-- CIFAR10/100 -> CIFAR10C/100C (standard/gradual)
-- ImageNet -> ImageNetC
-- Cityscapes -> ACDC (segmentation)
 
 上面比较
 
